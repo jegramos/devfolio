@@ -38,7 +38,7 @@ class FormatCodeTask extends AbstractExternalTask
 {
     public static function getConfigurableOptions(): ConfigOptionsResolver
     {
-        $resolver = new OptionsResolver;
+        $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'with_ide_helper' => true,
         ]);
@@ -66,7 +66,7 @@ class FormatCodeTask extends AbstractExternalTask
         exec($command, $output, $exitCode);
 
         foreach ($output as $message) {
-            echo $message.PHP_EOL;
+            echo $message . PHP_EOL;
         }
 
         if ($exitCode !== Command::SUCCESS) {

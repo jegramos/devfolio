@@ -1,0 +1,233 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'primevue/tailwind.css';
+@import 'tailwindcss/utilities';
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+/** Fonts */
+@font-face {
+  font-family: 'Kumar One';
+  src:
+    local('Kumar One'),
+    url('../fonts/Kumar_One/KumarOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  src:
+    local('Comfortaa'),
+    url('../fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato'),
+    url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Light'),
+    url('../fonts/Lato/Lato-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Bold'),
+    url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Black'),
+    url('../fonts/Lato/Lato-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Italic'),
+    url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Thin Italic'),
+    url('../fonts/Lato/Lato-ThinItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Light Italic'),
+    url('../fonts/Lato/Lato-LightItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Bold Italic'),
+    url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src:
+    local('Lato Black Italic'),
+    url('../fonts/Lato/Lato-BlackItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 900;
+}
+
+/* Primary and Surface Palettes */
+:root {
+  --p-primary-50: #e6f9f4;
+  --p-primary-100: #b3efe4;
+  --p-primary-200: #80e5d3;
+  --p-primary-300: #4ddbc3;
+  --p-primary-400: #1ad1b2;
+  --p-primary-500: #00c4a1;
+  --p-primary-600: #00a187;
+  --p-primary-700: #00816d;
+  --p-primary-800: #006054;
+  --p-primary-900: #004046;
+  --p-primary-950: #002c2e;
+  --p-space-50: #e8eaf6;
+  --p-space-100: #c5cae9;
+  --p-space-200: #9fa8da;
+  --p-space-300: #7986cb;
+  --p-space-400: #5c6bc0;
+  --p-space-500: #3f51b5;
+  --p-space-600: #3949ab;
+  --p-space-700: #303f9f;
+  --p-space-800: #283593;
+  --p-space-900: #1a237e;
+  --p-space-950: #0d1b6a;
+  --p-rose-50: #ffa3ab;
+  --p-rose-100: #ff8a92;
+  --p-rose-200: #ff7179;
+  --p-rose-300: #ff5860;
+  --p-rose-400: #ff3e47;
+  --p-rose-500: #c21a3f;
+  --p-rose-600: #a71837;
+  --p-rose-700: #8d1630;
+  --p-rose-800: #731429;
+  --p-rose-900: #591222;
+  --p-rose-950: #3c0d19;
+  --p-surface-0: #ffffff;
+  --p-surface-50: #fafafa;
+  --p-surface-100: #f4f4f5;
+  --p-surface-200: #e4e4e7;
+  --p-surface-300: #d4d4d8;
+  --p-surface-400: #a1a1aa;
+  --p-surface-500: #71717a;
+  --p-surface-600: #52525b;
+  --p-surface-700: #3f3f46;
+  --p-surface-800: #27272a;
+  --p-surface-900: #18181b;
+  --p-surface-950: #09090b;
+  --p-content-border-radius: 6px;
+}
+
+/* Light */
+:root {
+  --p-primary-color: var(--p-primary-500);
+  --p-primary-contrast-color: var(--p-surface-0);
+  --p-primary-hover-color: var(--p-primary-600);
+  --p-primary-active-color: var(--p-primary-700);
+  --p-content-border-color: var(--p-surface-200);
+  --p-content-hover-background: var(--p-surface-100);
+  --p-content-hover-color: var(--p-surface-800);
+  --p-highlight-background: var(--p-primary-50);
+  --p-highlight-color: var(--p-primary-700);
+  --p-highlight-focus-background: var(--p-primary-100);
+  --p-highlight-focus-color: var(--p-primary-800);
+  --p-text-color: var(--p-surface-700);
+  --p-text-hover-color: var(--p-surface-800);
+  --p-text-muted-color: var(--p-surface-500);
+  --p-text-hover-muted-color: var(--p-surface-600);
+}
+
+/*
+ * Dark Mode
+ * Defaults to system, change the selector to match the darkMode in tailwind.config.
+ * For example;
+ * darkMode: ['selector', '[class*="app-dark"]']
+ * should be;
+ * :root[class="app-dark"] {
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p-primary-color: var(--p-primary-400);
+    --p-primary-contrast-color: var(--p-surface-900);
+    --p-primary-hover-color: var(--p-primary-300);
+    --p-primary-active-color: var(--p-primary-200);
+    --p-content-border-color: var(--p-surface-700);
+    --p-content-hover-background: var(--p-surface-800);
+    --p-content-hover-color: var(--p-surface-0);
+    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+    --p-highlight-color: rgba(255, 255, 255, 0.87);
+    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+    --p-text-color: var(--p-surface-0);
+    --p-text-hover-color: var(--p-surface-0);
+    --p-text-muted-color: var(--p-surface-400);
+    --p-text-hover-muted-color: var(--p-surface-300);
+  }
+}
+
+.theme-primary-ocean {
+  --p-primary-color: var(--p-primary-700);
+  --p-primary-hover-color: var(--p-primary-700);
+  --p-primary-active-color: var(--p-primary-800);
+  --p-highlight-color: var(--p-primary-900);
+  --p-highlight-focus-background: var(--p-primary-100);
+  --p-highlight-focus-color: var(--p-primary-950);
+}
+
+.theme-primary-space {
+  --p-primary-color: var(--p-space-500);
+  --p-primary-hover-color: var(--p-space-600);
+  --p-primary-active-color: var(--p-space-700);
+  --p-highlight-color: var(--p-space-700);
+  --p-highlight-focus-background: var(--p-space-100);
+  --p-highlight-focus-color: var(--p-space-800);
+  --p-primary-contrast-color: var(--p-surface-0);
+}
+
+.theme-primary-rose {
+  --p-primary-color: var(--p-rose-500);
+  --p-primary-hover-color: var(--p-rose-600);
+  --p-primary-active-color: var(--p-rose-700);
+  --p-highlight-color: var(--p-rose-700);
+  --p-highlight-focus-background: var(--p-rose-100);
+  --p-highlight-focus-color: var(--p-rose-800);
+  --p-primary-contrast-color: var(--p-surface-0);
+}

@@ -1,17 +1,52 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "build": "vite build",
-        "dev": "vite"
-    },
-    "devDependencies": {
-        "autoprefixer": "^10.4.20",
-        "axios": "^1.7.4",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4.47",
-        "tailwindcss": "^3.4.13",
-        "vite": "^5.0"
-    }
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vue-tsc --noEmit && vite build",
+    "dev": "vite",
+    "watch": "vue-tsc --noEmit && vite build --mode development --watch",
+    "lint": "vue-tsc --noEmit && eslint *.{mjs,ts,cjs} resources/**/*.{vue,ts} --fix",
+    "format": "prettier *.{mjs,json,ts} ./**/*.{css,json,vue,ts} --write && npm run lint && git add ."
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@inertiajs/vue3": "^2.0.0-beta.2",
+    "@vueuse/core": "^11.2.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.1.1",
+    "tailwindcss-primeui": "^0.3.4",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
+    "@types/node": "^22.8.2",
+    "@typescript-eslint/eslint-plugin": "^8.12.1",
+    "@typescript-eslint/parser": "^8.12.1",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/tsconfig": "^0.5.1",
+    "autoprefixer": "^10.4.20",
+    "axios": "^1.7.4",
+    "concurrently": "^9.0.1",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.29.1",
+    "globals": "^15.11.0",
+    "laravel-vite-plugin": "^1.0.5",
+    "postcss": "^8.4.47",
+    "postcss-import": "^16.1.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "tailwindcss": "^3.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.12.1",
+    "vite": "^5.4.10",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-eslint-parser": "^9.4.3",
+    "vue-tsc": "^2.1.8"
+  }
 }

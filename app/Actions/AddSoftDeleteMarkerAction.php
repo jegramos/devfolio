@@ -16,6 +16,6 @@ final readonly class AddSoftDeleteMarkerAction
 {
     public function execute(string $value, string $separator = '::deleted_'): string
     {
-        return $value.$separator.time();
+        return $value . $separator . time();
     }
 }
