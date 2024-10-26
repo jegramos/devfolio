@@ -22,7 +22,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Standard user permissions
         Permission::create(['name' => PermissionEnum::VIEW_PROFILE]);
-        Permission::create(['name' => PermissionEnum::UPDATE_PROFILE,]);
+        Permission::create(['name' => PermissionEnum::UPDATE_PROFILE]);
         /** @var Role $standardRole */
         $standardRole = Role::create(['name' => RoleEnum::USER]);
         $standardRole->givePermissionTo(Permission::all());

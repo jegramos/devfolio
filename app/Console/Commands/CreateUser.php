@@ -47,9 +47,10 @@ class CreateUser extends Command
         }
 
         try {
-            $user = $createUserAction->execute(new User(), $data);
+            $user = $createUserAction->execute(new User, $data);
         } catch (Throwable $th) {
-            $this->error('Error: ' . $th->getMessage());
+            $this->error('Error: '.$th->getMessage());
+
             return Command::FAILURE;
         }
 

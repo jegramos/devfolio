@@ -8,9 +8,9 @@ use Throwable;
 class FormatCode extends Command
 {
     protected $signature = 'app:format-code
-                           {--no_ide_helper : Run the code formatter without barryvdh/laravel-ide-helper}
-                           {--no_git_add    : Do not automatically run the command `git add .` after a successful format}
-                           {--dry_run       : Inspect code style errors without changing the files}';
+                           {--no-ide-helper : Run the code formatter without barryvdh/laravel-ide-helper}
+                           {--no-git-add    : Do not automatically run the command `git add .` after a successful format}
+                           {--dry-run       : Inspect code style errors without changing the files}';
 
     protected $description = 'Enforces Laravel coding standards and enhances IDE integration';
 
@@ -21,7 +21,7 @@ class FormatCode extends Command
          *
          * @see https://laravel.com/docs/11.x/pint#main-content
          */
-        $pintTestArg = $this->option('dry_run') ? '--test' : '';
+        $pintTestArg = $this->option('dry-run') ? '--test' : '';
         $dirSep = DIRECTORY_SEPARATOR;
         $pintCommand = "vendor{$dirSep}bin{$dirSep}pint $pintTestArg";
 
@@ -40,7 +40,7 @@ class FormatCode extends Command
          * @see https://github.com/barryvdh/laravel-ide-helper
          */
         $ideHelperCommands = [];
-        if (! $this->option('no_ide_helper')) {
+        if (! $this->option('no-ide-helper')) {
             $ideHelperCommands[] = ['cmd' => 'clear-compiled', 'args' => []];
             $ideHelperCommands[] = ['cmd' => 'ide-helper:generate', 'args' => []];
             $ideHelperCommands[] = ['cmd' => 'ide-helper:meta', 'args' => []];
@@ -59,8 +59,8 @@ class FormatCode extends Command
         $this->info("\u{1F9FA} Code cleanup done!");
 
         // Add the changes to Git if successful
-        $dryRun = (bool) $this->option('dry_run');
-        $noGitAdd = (bool) $this->option('no_git_add');
+        $dryRun = (bool) $this->option('dry-run');
+        $noGitAdd = (bool) $this->option('no-git-add');
         if ($exitCode === Command::SUCCESS && ! $dryRun && ! $noGitAdd) {
             exec('git add .');
         }
