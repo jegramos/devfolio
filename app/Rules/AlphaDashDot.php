@@ -11,7 +11,7 @@ class AlphaDashDot implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param Closure(string, ?string=): PotentiallyTranslatedString $fail
+     * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -21,7 +21,7 @@ class AlphaDashDot implements ValidationRule
         }
 
         $formatIsValid = preg_match('/^[0-9A-Za-z_\-.]+$/u', $value) > 0;
-        if (!$formatIsValid) {
+        if (! $formatIsValid) {
             $fail($errorMessage);
         }
     }

@@ -1,0 +1,18 @@
+grumphp:
+  tasks:
+    securitychecker_enlightn:
+      lockfile: ./composer.lock
+      run_always: false
+    pest:
+      config_file: ~
+      testsuite: ~
+      always_execute: false
+    format_code:
+      with_ide_helper: true
+services:
+  App\Automation\Grump\FormatCodeTask:
+    arguments:
+      - '@process_builder'
+      - '@formatter.raw_process'
+    tags:
+      - { name: grumphp.task, task: format_code, priority: 1 }

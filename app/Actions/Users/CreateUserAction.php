@@ -11,11 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 /**
- *
  * This action handles the creation of a new user, including authentication data (`users` table),
  * user profile fields (`user_profiles` table), and role assignments. It performs all operations within a
  * database transaction to ensure data integrity.
- *
  */
 final readonly class CreateUserAction
 {

@@ -24,7 +24,7 @@ class UserRequest extends FormRequest
     {
         return [
             'email' => ['email', 'required', 'unique:users,email'],
-            'username' => ['required', 'string', 'max:50', 'unique:users,username', new AlphaDashDot()],
+            'username' => ['required', 'string', 'max:50', 'unique:users,username', new AlphaDashDot],
             'password' => [
                 'string',
                 'required',
@@ -41,7 +41,7 @@ class UserRequest extends FormRequest
                 'phone:mobile,lenient,international',
             ],
             'sex' => [new Enum(Gender::class), 'nullable'],
-            'birthday' => ['date_format:Y-m-d', 'nullable', 'before_or_equal:' . $this->dateToday],
+            'birthday' => ['date_format:Y-m-d', 'nullable', 'before_or_equal:'.$this->dateToday],
             'country_id' => ['string', 'nullable', 'exists:countries,id'],
             'address_line_1' => ['string', 'nullable', 'max:255'],
             'address_line_2' => ['string', 'nullable', 'max:255'],
