@@ -50,11 +50,11 @@ const renderAsInputGroup = computed(() => !!slots.icon)
         </InputGroupAddon>
         <Password v-bind="$attrs">
           <template v-if="props.enableFeedback || $attrs.feedback" #header>
-            <div class="text-xm mb-4 font-semibold text-xs md:text-sm">{{ props.feedbackHeader }}</div>
+            <div class="text-xm mb-4 text-xs font-semibold md:text-sm">{{ props.feedbackHeader }}</div>
           </template>
           <template v-if="props.enableFeedback || $attrs.feedback" #footer>
             <Divider />
-            <ul class="my-0 mt-2 ml-2 pl-2 leading-normal text-xs md:text-sm">
+            <ul class="my-0 ml-2 mt-2 pl-2 text-xs leading-normal md:text-sm">
               <li v-for="item in props.feedbackHelperList" :key="item">
                 {{ item }}
               </li>
@@ -72,11 +72,11 @@ const renderAsInputGroup = computed(() => !!slots.icon)
     <div class="flex w-full flex-col">
       <Password v-bind="$attrs">
         <template v-if="props.enableFeedback || $attrs.feedback" #header>
-          <div class="text-xm mb-4 font-semibold text-xs md:text-sm">{{ props.feedbackHeader }}</div>
+          <div class="text-xm mb-4 text-xs font-semibold md:text-sm">{{ props.feedbackHeader }}</div>
         </template>
         <template v-if="props.enableFeedback || $attrs.feedback" #footer>
           <Divider />
-          <ul class="my-0 mt-2 ml-2 pl-2 leading-normal text-xs md:text-sm">
+          <ul class="my-0 ml-2 mt-2 pl-2 text-xs leading-normal md:text-sm">
             <li v-for="item in props.feedbackHelperList" :key="item">
               {{ item }}
             </li>

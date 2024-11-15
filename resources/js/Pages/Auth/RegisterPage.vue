@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
+import { required, helpers, minLength, email } from '@vuelidate/validators'
 import Card from 'primevue/card'
 import Toast from 'primevue/toast'
 import Button from 'primevue/button'
@@ -12,8 +13,10 @@ import AppAnimatedFloaters from '@/Components/AppAnimatedFloaters.vue'
 import DfInputText from '@/Components/Inputs/DfInputText.vue'
 import DfPassword from '@/Components/Inputs/DfPassword.vue'
 import DfSelect from '@/Components/Inputs/DfSelect.vue'
-import { useRecaptcha } from '@/Composables/useRecaptcha.ts'
+import { useRecaptcha } from '@/Composables/useRecaptcha'
 import type { SharedPage } from '@/Types/shared.page'
+import { useClientValidatedForm } from '@/Composables/useClientValidatedForm.ts'
+import { passwordRegex, passwordRule } from '@/Utils/vuelidate-custom-validators.ts'
 
 const props = defineProps({
   loginUrl: {
@@ -38,7 +41,35 @@ const props = defineProps({
   },
 })
 
-const form = useForm({
+const clientValidationRules = {
+  $lazy: true,
+  username: {
+    required: helpers.withMessage('Username is required.', required),
+    minLength: helpers.withMessage('Must be 3 or more characters', minLength(3)),
+  },
+  email: {
+    required: helpers.withMessage('Email is required.', required),
+    email: helpers.withMessage('Must be a valid email address', email),
+  },
+  first_name: {
+    required: helpers.withMessage('First name is required.', required),
+  },
+  last_name: {
+    required: helpers.withMessage('Last name is required.', required),
+  },
+  password: {
+    required: helpers.withMessage('Password is required.', required),
+    password: helpers.withMessage(
+      'At least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character.',
+      passwordRule()
+    ),
+  },
+  country_id: {
+    required: helpers.withMessage('Select your country.', required),
+  },
+}
+
+const form = useClientValidatedForm(clientValidationRules, {
   username: '',
   email: '',
   password: '',
@@ -49,11 +80,11 @@ const form = useForm({
   recaptcha_response_token: '',
 })
 
-const submit = function (event: Event) {
+const submit = async function (event: Event) {
   const target = event.target as HTMLFormElement
   form.recaptcha_response_token = target['g-recaptcha-response']?.value || ''
 
-  form.post(props.processRegistrationUrl, {
+  await form.post(props.processRegistrationUrl, {
     onError: () => {
       if (form.errors.password) form.reset('password', 'password_confirmation')
       // This reloads the Recaptcha widget
@@ -69,6 +100,7 @@ if (props.recaptchaEnabled) {
   recaptchaTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+// Change the BG color if there are errors
 const page = usePage<SharedPage>()
 const bgColorClass = computed(function () {
   if (page.props.errors.TOO_MANY_REQUESTS) return 'bg-amber-700 dark:bg-amber-900'
@@ -156,10 +188,10 @@ const bgColorClass = computed(function () {
                 'At least one lowercase letter',
                 'At least one uppercase',
                 'At least one numeric',
-                'At least one symbol',
+                'At least one symbol from',
                 'Minimum 8 characters',
               ]"
-              strong-regex="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              :strong-regex="passwordRegex"
               medium-label="Almost there"
               strong-label="Perfect!"
             >

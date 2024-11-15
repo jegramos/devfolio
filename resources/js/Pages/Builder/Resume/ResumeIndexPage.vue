@@ -8,7 +8,7 @@ export default {
 <script setup lang="ts"></script>
 
 <template>
-  <section class="flex bg-surface-400 w-full">
+  <section class="flex w-full bg-surface-400">
     <h1>Resume Builder Index Page</h1>
   </section>
 </template>

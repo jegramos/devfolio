@@ -4,8 +4,8 @@
  * import { getAvatarDisplayNamePlaceholder } from '@/Utils/avatar-helpers'
  * const placeholder = getAvatarDisplayNamePlaceholder('Juan Luna') // returns 'JL'
  */
-export const getAvatarDisplayNamePlaceholder = (fullName?: string) => {
-  if (!fullName) return null
+export const getAvatarDisplayNamePlaceholder = function (fullName?: string) {
+  if (!fullName) return ''
 
   // we'll display the initials for the fake avatar
   const names = fullName.split(' ')

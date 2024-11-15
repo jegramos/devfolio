@@ -13,7 +13,7 @@ const { isMaximized: cmsDesktopSideIsMaximized } = useCmsDesktopSidebar()
       :class="`${cmsDesktopSideIsMaximized ? 'w-[20%]' : 'w-0 -translate-x-96 transform'}
        hidden overflow-hidden transition-all duration-200 lg:flex`"
     />
-    <section class="mx-2 mt-2 md:mx-4 md:mt-4 flex flex-1 flex-col lg:mt-0">
+    <section class="mx-2 mt-2 flex flex-1 flex-col md:mx-4 md:mt-4 lg:mt-0">
       <CmsDesktopToolbar class="hidden lg:flex" />
       <CmsMobileToolbar class="lg:hidden" />
       <slot></slot>

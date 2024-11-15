@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { Page } from '@inertiajs/core'
 import type { SharedPage } from '@/Types/shared.page.ts'
 
 export type NavLink = {
@@ -12,7 +13,7 @@ export type NavItem = {
   links: NavLink[]
 }
 
-export const useCmsNavLinks = function (page: SharedPage) {
+export const useCmsNavLinks = function (page: Page<SharedPage>) {
   const navItems = ref<NavItem[]>([
     {
       group: 'Portfolio',

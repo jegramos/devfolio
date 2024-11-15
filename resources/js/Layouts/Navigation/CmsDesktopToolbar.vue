@@ -79,7 +79,7 @@ const { toggle: toggleDesktopSidebar } = useCmsDesktopSidebar()
         <Menu id="avatar-menu" ref="avatarMenu" :model="avatarMenuItems" :popup="true" class="p-2">
           <template #start>
             <button
-              class="p-link relative mb-2 flex w-full items-center overflow-hidden rounded-md p-2 pl-3 hover:bg-surface-100 dark:hover:bg-surface-400/10"
+              class="p-link relative mb-2 flex w-full items-center overflow-hidden p-2 pl-3 hover:bg-surface-100 dark:hover:bg-surface-400/10"
             >
               <Avatar
                 :label="getAvatarDisplayNamePlaceholder(page.props.auth.user?.full_name)"
