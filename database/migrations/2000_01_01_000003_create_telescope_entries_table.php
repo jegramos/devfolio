@@ -18,6 +18,10 @@ return new class () extends Migration {
      */
     public function up(): void
     {
+        if (!config('telescope.enabled')) {
+            return;
+        }
+
         $schema = Schema::connection($this->getConnection());
 
         $schema->create('telescope_entries', function (Blueprint $table) {

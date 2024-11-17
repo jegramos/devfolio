@@ -35,10 +35,25 @@ return [
         ],
     ],
 
-    'google_recaptcha' => [
-        'url' => 'https://www.google.com/recaptcha/api/siteverify',
-        'site_key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
-        'secret_key' => env('GOOGLE_RECAPTCHA_SECRET_SITE_KEY'),
-        'enabled' => env('GOOGLE_RECAPTCHA_ENABLED', false),
+    'google' => [
+        'recaptcha' => [
+            'url' => 'https://www.google.com/recaptcha/api/siteverify',
+            'site_key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+            'secret_key' => env('GOOGLE_RECAPTCHA_SECRET_SITE_KEY'),
+            'enabled' => env('GOOGLE_RECAPTCHA_ENABLED', false),
+        ],
+        'oauth' => [
+            'client_id' => env('GOOGLE_OAUTH_CLIENT_ID'),
+            'client_secret' => env('GOOGLE_OAUTH_CLIENT_SECRET'),
+            'redirect' => env('GOOGLE_OAUTH_CALLBACK_URL'),
+        ]
     ],
+
+    'github' => [
+        'oauth' => [
+            'client_id' => env('GITHUB_OAUTH_CLIENT_ID'),
+            'client_secret' => env('GITHUB_OAUTH_CLIENT_SECRET'),
+            'redirect' => env('GITHUB_OAUTH_CALLBACK_URL'),
+        ]
+    ]
 ];

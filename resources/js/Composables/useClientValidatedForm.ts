@@ -1,7 +1,6 @@
 import type { InertiaForm } from '@inertiajs/vue3'
 import type { VisitOptions } from '@inertiajs/core'
 import { useVuelidate } from '@vuelidate/core'
-import { useForm } from '@inertiajs/vue3'
 
 type InertiaFormRecord = Record<string | number | symbol, unknown>
 type InertiaSubmissionMethod = (url: string, options?: Partial<VisitOptions>) => Promise<void>
@@ -23,7 +22,7 @@ type ClientValidatedInertiaForm<T extends InertiaFormRecord> = Omit<
  * Enhances an Inertia form with client-side validation capabilities.
  *
  * This function wraps an Inertia form in a Proxy to intercept and extend its `post`, `put`, `patch`, `delete`, and `get`
- * methods with client-side validation logic using Vuelidate. When these methods are called, the form data is first
+ * methods with client-side validation logic using Vuelidate. When these methods are called, the Inertia form data is first
  * validated against the provided rules. If the data passes validation, the original method is called with
  * the same arguments. If validation fails, the form errors are set, and the method call is nullified.
  *
@@ -34,8 +33,8 @@ type ClientValidatedInertiaForm<T extends InertiaFormRecord> = Omit<
  * Note that because Vuelidate does validation asynchronously, the `post`, `put`, `patch`, `delete`, and `get`
  * of the Inertia form methods now return promises.
  *
- * @param rules - An object containing validation rules to apply to the form data.
- * @param formData - The form data object to which client-side validation is to be added.
+ * @param rules - An object containing validation rules to apply to the InertiaForm instance.
+ * @param inertiaForm - The InertiaForm instance to be validated.
  *
  * @example
  *
@@ -47,15 +46,13 @@ type ClientValidatedInertiaForm<T extends InertiaFormRecord> = Omit<
  * import { required, email } from '@vuelidate/validators'
  *
  * const rules = { name: { required }, email: { required, email } }
- * const form = useClientValidatedForm(rules, { name: '', email: '' })
+ * const form = useClientValidatedForm(rules, useForm({ name: 'example', email: 'test@example.com' }))
  * const submit = async function () {
  *   await form.post('/submit')
  *   console.log('Done!') // Prints after form.post('/submit') promise resolves
  * }
  */
-export const useClientValidatedForm = function <T extends InertiaFormRecord>(rules: object, formData: T) {
-  const inertiaForm = useForm(formData as T)
-
+export const useClientValidatedForm = function <T extends InertiaFormRecord>(rules: object, inertiaForm: InertiaForm<T>) {
   return new Proxy(inertiaForm, {
     get: function (target, prop, receiver) {
       // Return the original property if it's not post, put, patch, delete, or get

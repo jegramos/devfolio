@@ -11,10 +11,6 @@ use function Pest\Laravel\followingRedirects;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
-beforeEach(function () {
-    artisan('db:seed');
-});
-
 it('can show the login form', function () {
     $response = get(route('auth.login.showForm'));
 
@@ -26,65 +22,71 @@ it('can show the login form', function () {
     );
 });
 
-it('can authenticate a user', function ($username, $email, $password) {
-    $payload = ['username' => $username, 'email' => $email, 'password' => $password, 'remember' => false];
+describe('with database access', function () {
+    beforeEach(function () {
+        artisan('db:seed');
+    });
 
-    UserFactory::new()
-        ->has(UserProfileFactory::new())
-        ->create([
-            'username' => $username ?? fake()->unique()->userName(),
-            'email' => $email ?? fake()->unique()->safeEmail(),
-            'password' => $password,
-        ]);
+    it('can authenticate a user', function ($username, $email, $password) {
+        $payload = ['username' => $username, 'email' => $email, 'password' => $password, 'remember' => false];
 
-    $response = post(route('auth.login.authenticate'), $payload);
-    $response->assertRedirect(route('builder.resume.index'));
-    assertAuthenticated();
-})->with([
-    'username and password' => [
-        'username' => fake()->unique()->userName(), 'email' => null, 'password' => fake()->password(10)
-    ],
-    'email and password' => [
-        'username' => null, 'email' => fake()->unique()->safeEmail(), 'password' => fake()->password(10)
-    ]
-]);
+        UserFactory::new()
+            ->has(UserProfileFactory::new())
+            ->create([
+                'username' => $username ?? fake()->unique()->userName(),
+                'email' => $email ?? fake()->unique()->safeEmail(),
+                'password' => $password,
+            ]);
 
-it('returns an error if the credentials are invalid', function () {
-    $payload = [
-        'username' => fake()->unique()->userName(),
-        'email' => fake()->unique()->safeEmail(),
-        'password' => fake()->password(10),
-        'remember' => false,
-    ];
+        $response = post(route('auth.login.authenticate'), $payload);
+        $response->assertRedirect(route('builder.resume.index'));
+        assertAuthenticated();
+    })->with([
+        'username and password' => [
+            'username' => fake()->unique()->userName(), 'email' => null, 'password' => fake()->password(10)
+        ],
+        'email and password' => [
+            'username' => null, 'email' => fake()->unique()->safeEmail(), 'password' => fake()->password(10)
+        ]
+    ]);
 
-    followingRedirects()
-        ->post(route('auth.login.authenticate'), $payload)
-        ->assertInertia(
-            fn (AssertableInertia $page) => $page
-                ->has('errors.' . ErrorCode::INVALID_CREDENTIALS->value)
-        );
-});
+    it('returns an error if the credentials are invalid', function () {
+        $payload = [
+            'username' => fake()->unique()->userName(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => fake()->password(10),
+            'remember' => false,
+        ];
 
-it('returns an error if the rate limit is exceeded', function () {
-    $payload = [
-        'username' => fake()->unique()->userName(),
-        'email' => fake()->unique()->safeEmail(),
-        'password' => fake()->password(10),
-        'remember' => false,
-    ];
+        followingRedirects()
+            ->post(route('auth.login.authenticate'), $payload)
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
+                    ->has('errors.' . ErrorCode::INVALID_CREDENTIALS->value)
+            );
+    });
 
-    // We forcefully hit the login throttle limit
-    $loginThrottleLimit = 5;
-    $tries = 1;
-    while ($tries <= $loginThrottleLimit) {
-        post(route('auth.login.authenticate'), $payload);
-        $tries++;
-    }
+    it('returns an error if the rate limit is exceeded', function () {
+        $payload = [
+            'username' => fake()->unique()->userName(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => fake()->password(10),
+            'remember' => false,
+        ];
 
-    followingRedirects()
-        ->post(route('auth.login.authenticate'), $payload)
-        ->assertInertia(
-            fn (AssertableInertia $page) => $page
-            ->has('errors.' . ErrorCode::TOO_MANY_REQUESTS->value)
-        );
+        // We forcefully hit the login throttle limit
+        $loginThrottleLimit = 5;
+        $tries = 1;
+        while ($tries <= $loginThrottleLimit) {
+            post(route('auth.login.authenticate'), $payload);
+            $tries++;
+        }
+
+        followingRedirects()
+            ->post(route('auth.login.authenticate'), $payload)
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
+                    ->has('errors.' . ErrorCode::TOO_MANY_REQUESTS->value)
+            );
+    });
 });

@@ -33,7 +33,7 @@ const toast = useToast()
 const showButtonIsLockedMessage = ref(false)
 const sendEmailError = ref(false)
 const emailSendingInProgress = ref(false)
-const sendEmailVerification = async function () {
+const sendEmailVerification = function () {
   router.visit(props.sendEmailVerificationUrl, {
     method: 'post',
     onStart: () => (emailSendingInProgress.value = true),

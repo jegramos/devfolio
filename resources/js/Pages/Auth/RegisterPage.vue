@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link, usePage } from '@inertiajs/vue3'
-import { required, helpers, minLength, email } from '@vuelidate/validators'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { required, helpers, minLength, email, requiredIf, sameAs } from '@vuelidate/validators'
 import Card from 'primevue/card'
 import Toast from 'primevue/toast'
 import Button from 'primevue/button'
@@ -15,8 +15,8 @@ import DfPassword from '@/Components/Inputs/DfPassword.vue'
 import DfSelect from '@/Components/Inputs/DfSelect.vue'
 import { useRecaptcha } from '@/Composables/useRecaptcha'
 import type { SharedPage } from '@/Types/shared.page'
-import { useClientValidatedForm } from '@/Composables/useClientValidatedForm.ts'
-import { passwordRegex, passwordRule } from '@/Utils/vuelidate-custom-validators.ts'
+import { useClientValidatedForm } from '@/Composables/useClientValidatedForm'
+import { passwordRegex, passwordRule, uniqueUserIdentifierRule } from '@/Utils/vuelidate-custom-validators'
 
 const props = defineProps({
   loginUrl: {
@@ -27,12 +27,16 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  checkAvailabilityBaseUrl: {
+    type: String,
+    required: true,
+  },
   countryOptions: {
     type: Array<{ id: number; name: string }>,
     required: true,
   },
   recaptchaEnabled: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   recaptchaSiteKey: {
@@ -41,15 +45,32 @@ const props = defineProps({
   },
 })
 
+const form = useForm({
+  username: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+  first_name: '',
+  last_name: '',
+  country_id: '',
+  recaptcha_response_token: '',
+})
+
 const clientValidationRules = {
   $lazy: true,
   username: {
     required: helpers.withMessage('Username is required.', required),
     minLength: helpers.withMessage('Must be 3 or more characters', minLength(3)),
+    unique: helpers.withAsync(
+      helpers.withMessage('This username is already taken', uniqueUserIdentifierRule(props.checkAvailabilityBaseUrl, 'username'))
+    ),
   },
   email: {
     required: helpers.withMessage('Email is required.', required),
     email: helpers.withMessage('Must be a valid email address', email),
+    unique: helpers.withAsync(
+      helpers.withMessage('This email is already taken', uniqueUserIdentifierRule(props.checkAvailabilityBaseUrl, 'email'))
+    ),
   },
   first_name: {
     required: helpers.withMessage('First name is required.', required),
@@ -64,29 +85,27 @@ const clientValidationRules = {
       passwordRule()
     ),
   },
+  password_confirmation: {
+    required: helpers.withMessage('Confirm your password.', required),
+    sameAsPassword: helpers.withMessage('Must match the password field', sameAs(computed(() => form.password))),
+  },
   country_id: {
     required: helpers.withMessage('Select your country.', required),
   },
+  recaptcha_response_token: {
+    requiredIfRecaptchaEnabled: helpers.withMessage('Verify that your are not a robot.', requiredIf(props.recaptchaEnabled)),
+  },
 }
 
-const form = useClientValidatedForm(clientValidationRules, {
-  username: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-  first_name: '',
-  last_name: '',
-  country_id: '',
-  recaptcha_response_token: '',
-})
+const formWithValidation = useClientValidatedForm(clientValidationRules, form)
 
 const submit = async function (event: Event) {
   const target = event.target as HTMLFormElement
-  form.recaptcha_response_token = target['g-recaptcha-response']?.value || ''
+  formWithValidation.recaptcha_response_token = target['g-recaptcha-response']?.value || ''
 
-  await form.post(props.processRegistrationUrl, {
+  await formWithValidation.post(props.processRegistrationUrl, {
     onError: () => {
-      if (form.errors.password) form.reset('password', 'password_confirmation')
+      if (formWithValidation.errors.password) formWithValidation.reset('password', 'password_confirmation')
       // This reloads the Recaptcha widget
       useRecaptcha('recaptcha-container')
     },
@@ -264,9 +283,9 @@ const bgColorClass = computed(function () {
             />
             <Button
               :disabled="form.processing"
-              icon="pi pi-facebook"
-              label="Sign up with Facebook"
-              class="w-full !border-blue-900 !bg-blue-900 !text-surface-0"
+              icon="pi pi-github"
+              label="Sign up with Github"
+              class="w-full !border-surface-950 !bg-surface-950 !text-surface-0"
             />
           </div>
         </div>

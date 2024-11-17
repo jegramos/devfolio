@@ -50,7 +50,7 @@ class UserRequest extends FormRequest
             'province_state_county' => ['nullable', new DbVarcharMaxLengthRule()],
             'postal_code' => ['nullable', new DbVarcharMaxLengthRule()],
             'active' => ['required', 'boolean'],
-            'email_verified' => ['required', 'boolean'],
+            'email_verified_at' => ['nullable', 'date'],
             'profile_picture_path' => ['nullable', new DbVarcharMaxLengthRule()],
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'distinct', 'exists:roles,name'],

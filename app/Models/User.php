@@ -52,15 +52,11 @@ class User extends Authenticatable implements MustVerifyEmail
                 $user->email = $addSoftDeleteMarkerAction->execute($user->email);
                 $user->saveQuietly();
 
-                // Delete the UserProfile associated with the user
+                // Delete the UserProfile and ExternalAccount associated with the user
                 $user->userProfile()->delete();
+                $user->externalAccount()->delete();
             });
         });
-    }
-
-    public function userProfile(): HasOne
-    {
-        return $this->hasOne(UserProfile::class);
     }
 
     /**
@@ -81,6 +77,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return Attribute::set(
             fn (string $value) => strtolower($value)
         );
+    }
+
+    public function userProfile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function externalAccount(): HasOne
+    {
+        return $this->hasOne(ExternalAccount::class);
     }
 
     /**

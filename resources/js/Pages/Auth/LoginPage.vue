@@ -23,6 +23,14 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  loginViaGoogleUrl: {
+    type: String,
+    required: true,
+  },
+  loginViaGithubUrl: {
+    type: String,
+    required: true,
+  },
 })
 
 type LoginForm = {
@@ -96,6 +104,14 @@ const bgColorClass = computed(() => {
     >
       {{ page.props.errors[ErrorCode.INVALID_CREDENTIALS] }}
     </Message>
+    <Message
+      v-if="!!page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT]"
+      severity="error"
+      icon="pi pi-exclamation-triangle"
+      class="mb-4 w-full animate-shake md:w-[55%] lg:w-[35%] dark:!bg-surface-900"
+    >
+      {{ page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT] }}
+    </Message>
     <Card class="z-10 w-full md:w-[55%] lg:w-[35%]">
       <template #title>
         <div class="flex flex-col">
@@ -164,18 +180,22 @@ const bgColorClass = computed(() => {
             <small class="font-thin">or</small>
           </Divider>
           <div class="flex flex-col space-y-2 dark:space-y-3">
-            <Button
-              :disabled="form.processing"
-              icon="pi pi-google"
-              label="Sign in with Google"
-              class="w-full !border-red-900 !bg-red-900 !text-surface-0"
-            />
-            <Button
-              :disabled="form.processing"
-              icon="pi pi-facebook"
-              label="Sign in with Facebook"
-              class="w-full !border-blue-900 !bg-blue-900 !text-surface-0"
-            />
+            <a :href="props.loginViaGoogleUrl" target="_blank" rel="noreferrer">
+              <Button
+                :disabled="form.processing"
+                icon="pi pi-google"
+                label="Sign in with Google"
+                class="w-full !border-red-900 !bg-red-900 !text-surface-0"
+              />
+            </a>
+            <a :href="props.loginViaGithubUrl" target="_blank" rel="noreferrer">
+              <Button
+                :disabled="form.processing"
+                icon="pi pi-github"
+                label="Sign in with Github"
+                class="w-full !border-surface-950 !bg-surface-950 !text-surface-0"
+              />
+            </a>
           </div>
           <!-- End Sign in Buttons -->
           <div class="pt-2">

@@ -15,6 +15,8 @@ class LoginController
         return Inertia::render('Auth/LoginPage', [
             'registerUrl' => route('auth.register.showForm'),
             'authenticateUrl' => route('auth.login.authenticate'),
+            'loginViaGoogleUrl' => route('oauth.google.redirect'),
+            'loginViaGithubUrl' => route('oauth.github.redirect'),
         ]);
     }
 

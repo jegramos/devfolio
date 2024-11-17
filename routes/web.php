@@ -21,6 +21,11 @@ Route::prefix('users')
 Route::name('auth.')
     ->group(base_path('routes/web/auth.routes.php'));
 
+/** OAuth / OpenID Routes */
+Route::name('oauth.')
+    ->prefix('oauth')
+    ->group(base_path('routes/web/oauth.routes.php'));
+
 /** Verify Email Routes */
 Route::name('verification.')
     ->group(base_path('routes/web/verify-email.routes.php'));

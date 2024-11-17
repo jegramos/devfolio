@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
         $route = $this->route()->getName();
 
         return match ($route) {
-            'auth.register.processRegistration' => $this->getProcessRegistrationRules(),
+            'auth.register.process' => $this->getProcessRegistrationRules(),
             default => [],
         };
     }

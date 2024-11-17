@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Actions\User\CreateUserAction;
-use App\DataTransferObjects\CreateUserDto;
 use App\Models\User;
 use App\Rules\DbVarcharMaxLengthRule;
 use App\Rules\EmailRule;
@@ -53,7 +52,7 @@ class CreateUser extends Command
         $data['email_verified'] = true;
 
         try {
-            $user = $createUserAction->execute(CreateUserDto::fromArray($data));
+            $user = $createUserAction->execute($data);
         } catch (Throwable $th) {
             $this->error('Error: ' . $th->getMessage());
 

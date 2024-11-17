@@ -29,4 +29,13 @@ class UserProfileFactory extends Factory
             'postal_code' => fake()->postcode(),
         ];
     }
+
+    public function withoutMiddlename(): Factory
+    {
+        return $this->state(function () {
+            return [
+                'middle_name' => null,
+            ];
+        });
+    }
 }

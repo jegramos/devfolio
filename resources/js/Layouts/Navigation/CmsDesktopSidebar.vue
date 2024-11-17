@@ -31,7 +31,7 @@ const { navItems } = useCmsNavLinks(page)
               v-for="link in item.links"
               :key="link.name"
               :href="link.uri"
-              class="flex transform items-center rounded-lg px-3 py-2 transition-colors hover:cursor-pointer hover:bg-primary hover:text-primary-contrast dark:text-surface-0"
+              class="flex transform items-center rounded-lg px-3 py-2 transition-colors hover:cursor-pointer hover:bg-primary hover:text-primary-contrast dark:text-surface-0 hover:dark:text-surface-0"
               :class="{ 'bg-primary text-primary-contrast dark:text-surface-0': page.url === link.uri }"
             >
               <i :class="link.icon"></i>

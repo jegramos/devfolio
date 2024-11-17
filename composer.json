@@ -12,6 +12,8 @@
     "inertiajs/inertia-laravel": "2.x-dev",
     "laravel/framework": "^11.9",
     "laravel/prompts": "^0.3.1",
+    "laravel/sanctum": "^4.0",
+    "laravel/socialite": "^5.16",
     "laravel/tinker": "^2.9",
     "predis/predis": "^2.2",
     "propaganistas/laravel-phone": "^5.3",

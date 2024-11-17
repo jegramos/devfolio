@@ -38,6 +38,6 @@ Route::middleware('guest')
         /** @uses RegisterController::showForm */
         Route::get('/register', 'showForm')->name('showForm');
 
-        /** @uses RegisterController::processRegistration */
-        Route::post('/register', 'processRegistration')->name('processRegistration');
+        /** @uses RegisterController::process */
+        Route::post('/register', 'process')->name('process');
     });

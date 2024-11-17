@@ -7,7 +7,7 @@ readonly class CreateUserDto
     public function __construct(
         public string $email,
         public string $username,
-        public string $password,
+        public ?string $password = null,
         public string $first_name,
         public string $last_name,
         public ?string $middle_name = null,
@@ -33,7 +33,7 @@ readonly class CreateUserDto
         return new static(
             $data['email'],
             $data['username'],
-            $data['password'],
+            $data['password'] ?? null,
             $data['first_name'],
             $data['last_name'],
             $data['middle_name'] ?? null,
