@@ -75,7 +75,7 @@ watch(
 )
 
 const bgColorClass = computed(function () {
-  if (page.props.errors[ErrorCode.TOO_MANY_REQUESTS]) return 'bg-amber-700 dark:bg-amber-900'
+  if (page.props.errors[ErrorCode.TOO_MANY_REQUESTS]) return 'bg-amber-700 dark:bg-amber-700'
   if (page.props.errors[ErrorCode.EMAIL_ALREADY_VERIFIED]) return 'bg-red-700 dark:bg-red-900'
   return 'bg-primary'
 })

@@ -92,8 +92,8 @@ const submit = function () {
 }
 
 const bgColorClass = computed(() => {
-  if (page.props.errors[ErrorCode.TOO_MANY_REQUESTS]) return 'bg-amber-700 dark:bg-amber-900'
-  else if (page.props.errors[ErrorCode.INVALID_CREDENTIALS]) return 'bg-red-700 dark:bg-red-900'
+  if (page.props.errors[ErrorCode.TOO_MANY_REQUESTS]) return 'bg-amber-700 dark:bg-amber-800'
+  else if (page.props.errors[ErrorCode.INVALID_CREDENTIALS]) return 'bg-red-700 dark:bg-red-800'
   else return 'bg-primary/90 dark:bg-primary'
 })
 

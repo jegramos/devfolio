@@ -19,6 +19,11 @@ export type SharedPage = {
       profile_picture_url?: string
     }
   }
+  flash: {
+    cms: {
+      success?: string
+    }
+  }
 }
 
 /**

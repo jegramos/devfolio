@@ -28,7 +28,7 @@
 
 .p-toast-close-button {
   @apply relative -right-1/4 -mt-[25%] flex h-7 w-7 cursor-pointer select-none
-        items-center justify-center overflow-hidden rounded-full border-none bg-transparent p-0 text-inherit transition-colors duration-200 
+        items-center justify-center overflow-hidden rounded-full border-none bg-transparent p-0 text-inherit transition-colors duration-200
         focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2;
 }
 
@@ -56,8 +56,7 @@
 }
 
 .p-toast-message-info .p-toast-close-button {
-  @apply hover:bg-blue-100 focus-visible:outline-blue-600
-        dark:hover:bg-white/5 dark:focus-visible:outline-blue-500;
+  @apply hover:bg-blue-100 focus:outline-none dark:hover:bg-white/5;
 }
 
 .p-toast-message-success {
@@ -71,8 +70,7 @@
 }
 
 .p-toast-message-success .p-toast-close-button {
-  @apply hover:bg-green-100 focus-visible:outline-green-600
-        dark:hover:bg-white/5 dark:focus-visible:outline-green-500;
+  @apply hover:bg-green-100 focus:outline-none dark:hover:bg-white/5;
 }
 
 .p-toast-message-warn {
@@ -86,8 +84,7 @@
 }
 
 .p-toast-message-warn .p-toast-close-button {
-  @apply hover:bg-yellow-100 focus-visible:outline-yellow-600
-        dark:hover:bg-white/5 dark:focus-visible:outline-yellow-500;
+  @apply hover:bg-yellow-100 focus:outline-none dark:hover:bg-white/5;
 }
 
 .p-toast-message-error {
@@ -101,8 +98,7 @@
 }
 
 .p-toast-message-error .p-toast-close-button {
-  @apply hover:bg-red-100 focus-visible:outline-red-600
-        dark:hover:bg-white/5 dark:focus-visible:outline-red-500;
+  @apply hover:bg-red-100 focus:outline-none dark:hover:bg-white/5;
 }
 
 .p-toast-message-secondary {
@@ -116,8 +112,7 @@
 }
 
 .p-toast-message-secondary .p-toast-close-button {
-  @apply hover:bg-surface-200 focus-visible:outline-surface-600
-        dark:hover:bg-surface-700 dark:focus-visible:outline-surface-300;
+  @apply hover:bg-surface-200 focus:outline-none dark:hover:bg-surface-700;
 }
 
 .p-toast-message-contrast {
@@ -131,8 +126,7 @@
 }
 
 .p-toast-message-contrast .p-toast-close-button {
-  @apply hover:bg-surface-800 focus-visible:outline-surface-50
-        dark:hover:bg-surface-100 dark:focus-visible:outline-surface-950;
+  @apply hover:bg-surface-800 focus:outline-none dark:hover:bg-surface-100;
 }
 
 .p-toast-top-center {

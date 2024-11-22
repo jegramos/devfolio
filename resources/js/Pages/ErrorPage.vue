@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import Button from 'primevue/button'
 import AppAnimatedFloaters from '@/Components/AppAnimatedFloaters.vue'
 
@@ -8,6 +8,10 @@ const props = defineProps({
   status: {
     type: Number,
     default: 500,
+  },
+  message: {
+    type: String || null,
+    default: null,
   },
 })
 
@@ -29,9 +33,8 @@ const description = computed(() => {
   }[props.status]
 })
 
-const navigateBack = function () {
-  window.history.back()
-}
+const navigateBack = () => window.history.back()
+const navigateToHome = () => router.get('/')
 </script>
 
 <template>
@@ -41,7 +44,10 @@ const navigateBack = function () {
   >
     <AppAnimatedFloaters />
     <h1 class="font-stylish text-[7rem] font-black text-surface-200">{{ status }}</h1>
-    <p class="text-surface-200">{{ description }}</p>
-    <Button icon="pi pi-caret-left" label="GO BACK" class="mt-6" @click="navigateBack"></Button>
+    <p class="text-surface-200">{{ props.message ?? description }}</p>
+    <div class="flex gap-x-4">
+      <Button icon="pi pi-caret-left" label="PREVIOUS PAGE" class="mt-6 dark:!text-surface-0" @click="navigateBack"></Button>
+      <Button icon="pi pi-home" label="BACK TO HOME" class="mt-6 dark:!text-surface-0" @click="navigateToHome"></Button>
+    </div>
   </div>
 </template>

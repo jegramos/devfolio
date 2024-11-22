@@ -94,7 +94,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification(): void
     {
-        $expirationInMinutes = Config::get('auth.verification.expiration.email', 60);
+        $expirationInMinutes = Config::get('auth.verification.expire', 60);
         $this->notify(new QueuedVerifyEmailNotification($this, $expirationInMinutes));
     }
 }

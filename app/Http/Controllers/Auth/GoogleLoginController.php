@@ -56,6 +56,8 @@ class GoogleLoginController
 
         auth()->login($user);
         session()->regenerate();
-        return redirect()->route('builder.resume.index');
+        return redirect()
+            ->route('builder.resume.index')
+            ->with('success', 'You have logged in via Google.');
     }
 }

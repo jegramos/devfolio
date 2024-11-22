@@ -80,7 +80,9 @@ return Application::configure(basePath: dirname(__DIR__))
                  * Only show Inertia modal errors during local development and testing
                  * @see https://v2.inertiajs.com/error-handling
                  */
-                return Inertia::render('ErrorPage', ['status' => $response->getStatusCode()])
+                $status = $response->getStatusCode();
+                $message = $e->getMessage();
+                return Inertia::render('ErrorPage', ['status' => $status, 'message' => $message])
                     ->toResponse($request)
                     ->setStatusCode($response->getStatusCode());
             }

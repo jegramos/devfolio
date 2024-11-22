@@ -136,7 +136,7 @@ if (props.recaptchaEnabled) {
 // Change the BG color if there are errors
 const page = usePage<SharedPage>()
 const bgColorClass = computed(function () {
-  if (page.props.errors.TOO_MANY_REQUESTS) return 'bg-amber-700 dark:bg-amber-900'
+  if (page.props.errors.TOO_MANY_REQUESTS) return 'bg-amber-700 dark:bg-amber-800'
   if (form.hasErrors) return 'bg-red-700 dark:bg-red-900'
   else return 'bg-primary/90 dark:bg-primary'
 })

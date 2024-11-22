@@ -17,7 +17,7 @@ class VerifyEmailController
     /**
      * @throws Exception
      */
-    public function showNotice(Request $request): Response
+    public function showNotice(): Response
     {
         $emailExpirationInMinutes = Config::get('auth.verification.expire');
         $interval = CarbonInterval::minutes($emailExpirationInMinutes);
@@ -32,7 +32,9 @@ class VerifyEmailController
     public function verify(NoLoginEmailVerificationRequest $request): RedirectResponse
     {
         $request->fulfill();
-        return redirect()->back()->with('success', 'Email address verified.');
+        return redirect()
+            ->route('builder.resume.index')
+            ->with('success', 'Email address verified.');
     }
 
     public function sendVerification(Request $request): RedirectResponse

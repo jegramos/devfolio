@@ -62,6 +62,12 @@ class HandleInertiaRequests extends Middleware
                         ->toArray(),
                 ];
             },
+            // Flash messages
+            'flash' => [
+                'cms' => [
+                    'success' => fn () => $request->session()->get('success'),
+                ],
+            ],
         ]);
     }
 }
