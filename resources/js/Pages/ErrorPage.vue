@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Head } from '@inertiajs/vue3'
 import Button from 'primevue/button'
 import AppAnimatedFloaters from '@/Components/AppAnimatedFloaters.vue'
 
@@ -34,6 +35,7 @@ const navigateBack = function () {
 </script>
 
 <template>
+  <Head :title="`${props.status} Error`"></Head>
   <div
     class="flex h-[100vh] w-[100vw] flex-col items-center justify-start bg-gradient-to-b from-primary/90 to-primary pt-16 md:justify-center md:pt-0"
   >

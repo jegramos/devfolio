@@ -12,7 +12,7 @@ import InputText from 'primevue/inputtext'
 import CmsBreadCrumb from '@/Layouts/Navigation/CmsBreadCrumb.vue'
 import { useCmsDesktopSidebar } from '@/Composables/useCmsDesktopSidebar'
 import { getAvatarDisplayNamePlaceholder } from '@/Utils/avatar-helpers'
-import type { SharedPage } from '@/Types/shared.page'
+import type { SharedPage } from '@/Types/shared-page.ts'
 
 const page = usePage<SharedPage>()
 

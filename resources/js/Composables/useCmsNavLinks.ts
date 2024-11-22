@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { Page } from '@inertiajs/core'
-import type { SharedPage } from '@/Types/shared.page.ts'
+import type { SharedPage } from '@/Types/shared-page.ts'
 
 export type NavLink = {
   name: string

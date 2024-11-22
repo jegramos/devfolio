@@ -8,6 +8,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Inertia\Inertia;
+use Laravel\Socialite\Two\InvalidStateException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 
@@ -48,11 +49,29 @@ return Application::configure(basePath: dirname(__DIR__))
                 return $createApiErrorResponse->execute($e);
             }
 
-            /**
-             * Only show Inertia modal errors during local development and testing
-             * @see https://v2.inertiajs.com/error-handling
-             */
-            if (!app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
+            if (!app()->environment(['local', 'testing'])) {
+                // An InvalidStateException from Socialite is likely an unauthorized request
+                if ($e instanceof InvalidStateException) {
+                    Log::warning('Socialite: ' . $e::class, [
+                        'request_url' => $request->url(),
+                        'user_agent' => $request->userAgent(),
+                    ]);
+
+                    $response->setStatusCode(Response::HTTP_FORBIDDEN);
+                }
+
+                // Log Server Errors
+                if ($response->getStatusCode() >= Response::HTTP_INTERNAL_SERVER_ERROR) {
+                    Log::error('Server Error: ' . $e::class, [
+                        'error_message' => $e->getMessage(),
+                        'stack_trace' => $e->getTraceAsString(),
+                    ]);
+                }
+
+                /**
+                 * Only show Inertia modal errors during local development and testing
+                 * @see https://v2.inertiajs.com/error-handling
+                 */
                 return Inertia::render('ErrorPage', ['status' => $response->getStatusCode()])
                     ->toResponse($request)
                     ->setStatusCode($response->getStatusCode());

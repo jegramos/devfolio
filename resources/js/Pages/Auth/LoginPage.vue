@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { computed, watch } from 'vue'
+import { Link, useForm, usePage, Head, router } from '@inertiajs/vue3'
+import { useBroadcastChannel } from '@vueuse/core'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
@@ -12,7 +13,8 @@ import AppAnimatedFloaters from '@/Components/AppAnimatedFloaters.vue'
 import AppLogo from '@/Components/AppLogo.vue'
 import DfInputText from '@/Components/Inputs/DfInputText.vue'
 import DfPassword from '@/Components/Inputs/DfPassword.vue'
-import { ErrorCode, type SharedPage } from '@/Types/shared.page.ts'
+import { ErrorCode, type SharedPage } from '@/Types/shared-page.ts'
+import { ChannelName } from '@/Types/broadcast-channel.ts'
 
 const props = defineProps({
   registerUrl: {
@@ -28,6 +30,10 @@ const props = defineProps({
     required: true,
   },
   loginViaGithubUrl: {
+    type: String,
+    required: true,
+  },
+  resumeBuilderUrl: {
     type: String,
     required: true,
   },
@@ -90,9 +96,19 @@ const bgColorClass = computed(() => {
   else if (page.props.errors[ErrorCode.INVALID_CREDENTIALS]) return 'bg-red-700 dark:bg-red-900'
   else return 'bg-primary/90 dark:bg-primary'
 })
+
+// Listen for broadcast from other tabs the user is already logged in
+const { isSupported, data, close } = useBroadcastChannel({ name: ChannelName.LOGIN_CHANNEL })
+watch(data, function () {
+  if (isSupported.value) {
+    router.get(props.resumeBuilderUrl)
+    close()
+  }
+})
 </script>
 
 <template>
+  <Head title="Login"></Head>
   <section :class="`relative flex h-screen w-full flex-col items-center justify-center px-2 md:px-0 ${bgColorClass}`">
     <Toast />
     <AppAnimatedFloaters />
@@ -100,7 +116,7 @@ const bgColorClass = computed(() => {
       v-if="!!page.props.errors[ErrorCode.INVALID_CREDENTIALS]"
       severity="error"
       icon="pi pi-exclamation-triangle"
-      class="mb-4 w-full animate-shake md:w-[55%] lg:w-[35%] dark:!bg-surface-900"
+      class="mb-4 w-full animate-shake md:w-[55%] lg:w-[35%] dark:!bg-surface-950"
     >
       {{ page.props.errors[ErrorCode.INVALID_CREDENTIALS] }}
     </Message>
@@ -108,7 +124,7 @@ const bgColorClass = computed(() => {
       v-if="!!page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT]"
       severity="error"
       icon="pi pi-exclamation-triangle"
-      class="mb-4 w-full animate-shake md:w-[55%] lg:w-[35%] dark:!bg-surface-900"
+      class="mb-4 w-full animate-shake md:w-[55%] lg:w-[35%] dark:!bg-surface-950"
     >
       {{ page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT] }}
     </Message>
@@ -180,7 +196,7 @@ const bgColorClass = computed(() => {
             <small class="font-thin">or</small>
           </Divider>
           <div class="flex flex-col space-y-2 dark:space-y-3">
-            <a :href="props.loginViaGoogleUrl" target="_blank" rel="noreferrer">
+            <a :href="props.loginViaGoogleUrl" target="_blank">
               <Button
                 :disabled="form.processing"
                 icon="pi pi-google"
@@ -188,7 +204,7 @@ const bgColorClass = computed(() => {
                 class="w-full !border-red-900 !bg-red-900 !text-surface-0"
               />
             </a>
-            <a :href="props.loginViaGithubUrl" target="_blank" rel="noreferrer">
+            <a :href="props.loginViaGithubUrl" target="_blank">
               <Button
                 :disabled="form.processing"
                 icon="pi pi-github"

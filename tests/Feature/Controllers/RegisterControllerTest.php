@@ -20,6 +20,9 @@ it('can show the registration form', function () {
             ->has('countryOptions')
             ->has('recaptchaEnabled')
             ->has('recaptchaSiteKey')
+            ->has('loginViaGoogleUrl')
+            ->has('loginViaGithubUrl')
+            ->has('resumeBuilderUrl')
     );
 });
 

@@ -19,6 +19,9 @@ it('can show the login form', function () {
             ->component('Auth/LoginPage')
             ->has('registerUrl')
             ->has('authenticateUrl')
+            ->has('loginViaGoogleUrl')
+            ->has('loginViaGithubUrl')
+            ->has('resumeBuilderUrl')
     );
 });
 

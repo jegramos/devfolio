@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { usePage, router } from '@inertiajs/vue3'
+import { usePage, router, Head } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3'
 import { useIntervalFn } from '@vueuse/core'
 import Button from 'primevue/button'
@@ -9,7 +9,7 @@ import Toast from 'primevue/toast'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEnvelopeOpenText, faPaperPlane, faClock, faSignOutAlt, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import AppAnimatedFloaters from '@/Components/AppAnimatedFloaters.vue'
-import { ErrorCode, type SharedPage } from '@/Types/shared.page.ts'
+import { ErrorCode, type SharedPage } from '@/Types/shared-page.ts'
 
 const page = usePage<SharedPage>()
 const props = defineProps({
@@ -88,6 +88,7 @@ const sendButtonColorClass = computed(function () {
 </script>
 
 <template>
+  <Head title="Verify Email"></Head>
   <Toast />
   <section
     :class="`flex h-screen w-full flex-col items-center justify-center px-2 text-primary-contrast md:px-0 ${bgColorClass}`"

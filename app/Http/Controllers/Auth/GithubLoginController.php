@@ -48,8 +48,9 @@ class GithubLoginController
                 [Role::USER]
             );
         } catch (DuplicateEmailException) {
+            $message = 'An account with your Github email address already exists.';
             return redirect(route('auth.login.showForm'))->withErrors([
-                ErrorCode::EXTERNAL_ACCOUNT_EMAIL_CONFLICT->value => 'You already have an account with that Github email address.'
+                ErrorCode::EXTERNAL_ACCOUNT_EMAIL_CONFLICT->value => $message
             ]);
         }
 

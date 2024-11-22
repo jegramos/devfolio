@@ -5,7 +5,7 @@ import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar'
 import Tag from 'primevue/tag'
-import type { SharedPage } from '@/Types/shared.page'
+import type { SharedPage } from '@/Types/shared-page.ts'
 import { getAvatarDisplayNamePlaceholder } from '@/Utils/avatar-helpers'
 import { useCmsNavLinks } from '@/Composables/useCmsNavLinks.ts'
 

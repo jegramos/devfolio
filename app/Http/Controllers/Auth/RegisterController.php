@@ -27,6 +27,9 @@ class RegisterController
             'countryOptions' => DB::table('countries')->select('id', 'name')->get(),
             'recaptchaEnabled' => $recaptchaEnabled,
             'recaptchaSiteKey' => $recaptchaEnabled ? config('services.google.recaptcha.site_key') : null,
+            'loginViaGoogleUrl' => route('oauth.google.redirect'),
+            'loginViaGithubUrl' => route('oauth.github.redirect'),
+            'resumeBuilderUrl' => route('builder.resume.index'),
         ]);
     }
 

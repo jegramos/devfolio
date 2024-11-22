@@ -1,10 +1,26 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
+import { useBroadcastChannel } from '@vueuse/core'
 import CmsDesktopSidebar from '@/Layouts/Navigation/CmsDesktopSidebar.vue'
 import CmsDesktopToolbar from '@/Layouts/Navigation/CmsDesktopToolbar.vue'
 import { useCmsDesktopSidebar } from '@/Composables/useCmsDesktopSidebar'
 import CmsMobileToolbar from '@/Layouts/Navigation/CmsMobileToolbar.vue'
+import { ChannelName } from '@/Types/broadcast-channel.ts'
 
 const { isMaximized: cmsDesktopSideIsMaximized } = useCmsDesktopSidebar()
+
+// Broadcast to other tabs the user is already logged in if they
+// access this layout component (E.g. When users log-in via Google)
+const broadcastLogin = function () {
+  const { isSupported, post } = useBroadcastChannel({ name: ChannelName.LOGIN_CHANNEL })
+  if (isSupported.value) {
+    post(true)
+  }
+}
+
+nextTick(() => {
+  broadcastLogin()
+})
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { usePage, router } from '@inertiajs/vue3'
 import Breadcrumb from 'primevue/breadcrumb'
 import { useCmsNavLinks } from '@/Composables/useCmsNavLinks'
-import type { SharedPage } from '@/Types/shared.page.ts'
+import type { SharedPage } from '@/Types/shared-page.ts'
 
 // Get the group name
 const page = usePage<SharedPage>()

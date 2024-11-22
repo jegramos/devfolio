@@ -39,25 +39,18 @@ class GoogleLoginController
         $config = config('services.google.oauth');
         $provider = Socialite::buildProvider(GoogleProvider::class, $config);
 
-        $user = $this->syncExternalAccountAction->execute(
-            ExternalLoginProvider::GOOGLE,
-            $provider->user(),
-            $this->createUserAction,
-            $this->updateUserAction,
-            [Role::USER]
-        );
-
         try {
             $user = $this->syncExternalAccountAction->execute(
-                ExternalLoginProvider::GITHUB,
+                ExternalLoginProvider::GOOGLE,
                 $provider->user(),
                 $this->createUserAction,
                 $this->updateUserAction,
                 [Role::USER]
             );
         } catch (DuplicateEmailException) {
-            return redirect(route('auth.login.showForm'))->withErrors([
-                ErrorCode::EXTERNAL_ACCOUNT_EMAIL_CONFLICT->value => 'You already have an account with that Github email address.'
+            $message = 'An account with your Google email address already exists.';
+            return redirect(route('auth.register.showForm'))->withErrors([
+                ErrorCode::EXTERNAL_ACCOUNT_EMAIL_CONFLICT->value => $message
             ]);
         }
 

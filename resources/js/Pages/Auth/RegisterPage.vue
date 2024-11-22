@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { computed, watch } from 'vue'
+import { Link, useForm, usePage, Head, router } from '@inertiajs/vue3'
+import { useBroadcastChannel } from '@vueuse/core'
 import { required, helpers, minLength, email, requiredIf, sameAs } from '@vuelidate/validators'
 import Card from 'primevue/card'
 import Toast from 'primevue/toast'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
+import Message from 'primevue/message'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faRocket } from '@fortawesome/free-solid-svg-icons'
 import AppLogo from '@/Components/AppLogo.vue'
@@ -14,9 +16,10 @@ import DfInputText from '@/Components/Inputs/DfInputText.vue'
 import DfPassword from '@/Components/Inputs/DfPassword.vue'
 import DfSelect from '@/Components/Inputs/DfSelect.vue'
 import { useRecaptcha } from '@/Composables/useRecaptcha'
-import type { SharedPage } from '@/Types/shared.page'
+import { ErrorCode, type SharedPage } from '@/Types/shared-page.ts'
 import { useClientValidatedForm } from '@/Composables/useClientValidatedForm'
 import { passwordRegex, passwordRule, uniqueUserIdentifierRule } from '@/Utils/vuelidate-custom-validators'
+import { ChannelName } from '@/Types/broadcast-channel.ts'
 
 const props = defineProps({
   loginUrl: {
@@ -41,6 +44,18 @@ const props = defineProps({
   },
   recaptchaSiteKey: {
     type: String || null,
+    required: true,
+  },
+  loginViaGoogleUrl: {
+    type: String,
+    required: true,
+  },
+  loginViaGithubUrl: {
+    type: String,
+    required: true,
+  },
+  resumeBuilderUrl: {
+    type: String,
     required: true,
   },
 })
@@ -126,12 +141,27 @@ const bgColorClass = computed(function () {
   if (form.hasErrors) return 'bg-red-700 dark:bg-red-900'
   else return 'bg-primary/90 dark:bg-primary'
 })
+
+// Listen for broadcast from other tabs the user is already logged in
+const { isSupported, data } = useBroadcastChannel({ name: ChannelName.LOGIN_CHANNEL })
+if (isSupported.value) {
+  watch(data, () => router.get(props.resumeBuilderUrl))
+}
 </script>
 
 <template>
+  <Head title="Register"></Head>
   <section :class="`relative flex h-screen w-full flex-col items-center justify-center px-2 md:px-0 ${bgColorClass}`">
     <Toast />
     <AppAnimatedFloaters />
+    <Message
+      v-if="!!page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT]"
+      severity="error"
+      icon="pi pi-exclamation-triangle"
+      class="mb-4 w-full animate-shake md:w-[80%] lg:w-[50%] dark:!bg-surface-950"
+    >
+      {{ page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT] }}
+    </Message>
     <Card class="z-10 w-full md:w-[80%] lg:w-[50%]">
       <template #title>
         <div class="flex flex-col">
@@ -275,18 +305,22 @@ const bgColorClass = computed(function () {
             <small class="font-thin">or</small>
           </Divider>
           <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-            <Button
-              :disabled="form.processing"
-              icon="pi pi-google"
-              label="Sign up with Google"
-              class="w-full !border-red-900 !bg-red-900 !text-surface-0"
-            />
-            <Button
-              :disabled="form.processing"
-              icon="pi pi-github"
-              label="Sign up with Github"
-              class="w-full !border-surface-950 !bg-surface-950 !text-surface-0"
-            />
+            <a :href="loginViaGoogleUrl" target="_blank" class="flex w-full">
+              <Button
+                :disabled="form.processing"
+                icon="pi pi-google"
+                label="Sign up with Google"
+                class="w-full !border-red-900 !bg-red-900 !text-surface-0"
+              />
+            </a>
+            <a :href="loginViaGithubUrl" target="_blank" class="flex w-full">
+              <Button
+                :disabled="form.processing"
+                icon="pi pi-github"
+                label="Sign up with Github"
+                class="w-full !border-surface-950 !bg-surface-950 !text-surface-0"
+              />
+            </a>
           </div>
         </div>
         <div class="pt-2">

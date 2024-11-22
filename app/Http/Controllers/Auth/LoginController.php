@@ -17,6 +17,7 @@ class LoginController
             'authenticateUrl' => route('auth.login.authenticate'),
             'loginViaGoogleUrl' => route('oauth.google.redirect'),
             'loginViaGithubUrl' => route('oauth.github.redirect'),
+            'resumeBuilderUrl' => route('builder.resume.index'),
         ]);
     }
 

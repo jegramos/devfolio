@@ -2,7 +2,7 @@
 import { usePage, Link } from '@inertiajs/vue3'
 import AppLogo from '@/Components/AppLogo.vue'
 import { useCmsNavLinks } from '@/Composables/useCmsNavLinks'
-import type { SharedPage } from '@/Types/shared.page'
+import type { SharedPage } from '@/Types/shared-page.ts'
 
 const page = usePage<SharedPage>()
 const { navItems } = useCmsNavLinks(page)

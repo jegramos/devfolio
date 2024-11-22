@@ -5,6 +5,7 @@ import { primeVue } from './Plugins/primevue'
 import ToastService from 'primevue/toastservice'
 
 createInertiaApp({
+  title: (title) => (title ? `${title} - DevFolio` : 'DevFolio'),
   resolve: (name) => {
     const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue', { eager: true })
     return pages[`./Pages/${name}.vue`]
@@ -15,5 +16,9 @@ createInertiaApp({
       .use(primeVue.options, primeVue.config)
       .use(ToastService)
       .mount(el)
+  },
+  progress: {
+    color: '#f5940b',
+    showSpinner: true,
   },
 }).then(() => {})
