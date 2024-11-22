@@ -1,5 +1,15 @@
 grumphp:
   tasks:
+    # Run code formatter for laravel
+    pint:
+      with_ide_helper: false
+    # Run code formatter for VueJS
+    npm_script:
+      script: format
+      triggered_by: [ js, mjs, css, json ]
+      working_directory: './'
+      is_run_task: true
+      silent: false
     securitychecker_enlightn:
       lockfile: ./composer.lock
       run_always: false
@@ -7,12 +17,10 @@ grumphp:
       config_file: ~
       testsuite: ~
       always_execute: false
-    format_code:
-      with_ide_helper: true
 services:
   App\Automation\Grump\FormatCodeTask:
     arguments:
       - '@process_builder'
       - '@formatter.raw_process'
     tags:
-      - { name: grumphp.task, task: format_code, priority: 1 }
+      - { name: grumphp.task, task: pint }

@@ -17,8 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Custom GrumPHP task for code formatting using the \App\Console\Commands\FormatCode command class.
  * This task integrates with GrumPHP to format code before commits and during run contexts.
  *
- *  Example GrumPHP Configuration (grumphp.yml):
- *  ```
+ * Example GrumPHP Configuration (grumphp.yml):
+ * <code>
  * grumphp:
  *   tasks:
  *     format_code:
@@ -26,11 +26,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * services:
  *   App\Automation\Grump\FormatCodeTask:
  *     arguments:
- *       - '@process_builder'
- *       - '@formatter.raw_process'
+ *       - '{@}process_builder'
+ *       - '{@}formatter.raw_process'
  *     tags:
  *       - { name: grumphp.task, task: format_code, priority: 1 }
- *  ```
+ * </code>
  *
  * @see https://github.com/phpro/grumphp/blob/v2.x/doc/tasks.md#run-the-same-task-twice-with-different-configuration
  */
@@ -38,7 +38,7 @@ class FormatCodeTask extends AbstractExternalTask
 {
     public static function getConfigurableOptions(): ConfigOptionsResolver
     {
-        $resolver = new OptionsResolver;
+        $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'with_ide_helper' => true,
         ]);
@@ -66,7 +66,7 @@ class FormatCodeTask extends AbstractExternalTask
         exec($command, $output, $exitCode);
 
         foreach ($output as $message) {
-            echo $message.PHP_EOL;
+            echo $message . PHP_EOL;
         }
 
         if ($exitCode !== Command::SUCCESS) {

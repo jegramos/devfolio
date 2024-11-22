@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Throwable;
 
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
+
 class FormatCode extends Command
 {
     protected $signature = 'app:format-code
@@ -25,13 +28,13 @@ class FormatCode extends Command
         $dirSep = DIRECTORY_SEPARATOR;
         $pintCommand = "vendor{$dirSep}bin{$dirSep}pint $pintTestArg";
 
-        $this->info("\u{1F9F9} Cleaning up your dirty code...");
+        info("\u{1F9F9} Running Pint...");
         $exitCode = Command::SUCCESS;
 
         exec($pintCommand, $output, $exitCode);
 
         foreach ($output as $message) {
-            echo $message.PHP_EOL;
+            $this->info($message);
         }
 
         /**
@@ -40,29 +43,34 @@ class FormatCode extends Command
          * @see https://github.com/barryvdh/laravel-ide-helper
          */
         $ideHelperCommands = [];
-        if (! $this->option('no-ide-helper')) {
+        if (!$this->option('no-ide-helper')) {
             $ideHelperCommands[] = ['cmd' => 'clear-compiled', 'args' => []];
             $ideHelperCommands[] = ['cmd' => 'ide-helper:generate', 'args' => []];
             $ideHelperCommands[] = ['cmd' => 'ide-helper:meta', 'args' => []];
             $ideHelperCommands[] = ['cmd' => 'ide-helper:models', 'args' => ['--nowrite' => true]];
+
+            info("\u{1F4BB} Running IDE helper generator...");
         }
 
         foreach ($ideHelperCommands as $ideHelperCommand) {
             try {
                 $this->call($ideHelperCommand['cmd'], $ideHelperCommand['args']);
             } catch (Throwable $th) {
-                $this->error("\u{1F645}  Error: ".$th->getMessage());
+                error("\u{1F645}  Error: " . $th->getMessage());
                 $exitCode = Command::FAILURE;
             }
         }
 
-        $this->info("\u{1F9FA} Code cleanup done!");
-
-        // Add the changes to Git if successful
+        // Stage the code changes in Git if successful
         $dryRun = (bool) $this->option('dry-run');
         $noGitAdd = (bool) $this->option('no-git-add');
-        if ($exitCode === Command::SUCCESS && ! $dryRun && ! $noGitAdd) {
+        if ($exitCode === Command::SUCCESS && !$dryRun && !$noGitAdd) {
             exec('git add .');
+            info("\u{2795}  Any code changes were staged in Git");
+        }
+
+        if ($exitCode === Command::SUCCESS) {
+            info("\u{1F44D} Done!");
         }
 
         return $exitCode;

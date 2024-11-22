@@ -3,21 +3,19 @@
 namespace App\Models;
 
 use App\Actions\AddSoftDeleteMarkerAction;
-use Database\Factories\UserFactory;
+use App\Notifications\QueuedVerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory;
-
     use HasRoles;
     use Notifiable;
     use SoftDeletes;
@@ -54,14 +52,49 @@ class User extends Authenticatable implements MustVerifyEmail
                 $user->email = $addSoftDeleteMarkerAction->execute($user->email);
                 $user->saveQuietly();
 
-                // Delete the UserProfile associated with the user
+                // Delete the UserProfile and ExternalAccount associated with the user
                 $user->userProfile()->delete();
+                $user->externalAccount()->delete();
             });
         });
+    }
+
+    /**
+     * The username attribute should always be in lowercase.
+     */
+    protected function username(): Attribute
+    {
+        return Attribute::set(
+            fn (string $value) => strtolower($value)
+        );
+    }
+
+    /**
+     * The email attribute should always be in lowercase.
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::set(
+            fn (string $value) => strtolower($value)
+        );
     }
 
     public function userProfile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
+    }
+
+    public function externalAccount(): HasOne
+    {
+        return $this->hasOne(ExternalAccount::class);
+    }
+
+    /**
+     * Send an email verification notification asynchronously
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $expirationInMinutes = Config::get('auth.verification.expiration.email', 60);
+        $this->notify(new QueuedVerifyEmailNotification($this, $expirationInMinutes));
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Enums\Gender;
-use App\Rules\AlphaDashDot;
+use App\Rules\DbVarcharMaxLengthRule;
+use App\Rules\EmailRule;
+use App\Rules\PasswordRule;
+use App\Rules\UsernameRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
 {
@@ -23,37 +25,35 @@ class UserRequest extends FormRequest
     public function getStoreUserRules(): array
     {
         return [
-            'email' => ['email', 'required', 'unique:users,email'],
-            'username' => ['required', 'string', 'max:50', 'unique:users,username', new AlphaDashDot],
+            'email' => ['required', new EmailRule()],
+            'username' => ['required', new UsernameRule()],
             'password' => [
-                'string',
                 'required',
                 'confirmed',
-                'max:100',
-                Password::min(8)->mixedCase()->numbers()->symbols(),
+                new PasswordRule(),
             ],
-            'first_name' => ['string', 'required', 'max:255'],
-            'last_name' => ['string', 'required', 'max:255'],
-            'middle_name' => ['string', 'nullable', 'max:255'],
+            'first_name' => ['required', new DbVarcharMaxLengthRule()],
+            'last_name' => ['required', new DbVarcharMaxLengthRule()],
+            'middle_name' => ['nullable', new DbVarcharMaxLengthRule()],
             'mobile_number' => [
                 'nullable',
                 'unique:user_profiles,mobile_number',
                 'phone:mobile,lenient,international',
             ],
             'sex' => [new Enum(Gender::class), 'nullable'],
-            'birthday' => ['date_format:Y-m-d', 'nullable', 'before_or_equal:'.$this->dateToday],
-            'country_id' => ['string', 'nullable', 'exists:countries,id'],
-            'address_line_1' => ['string', 'nullable', 'max:255'],
-            'address_line_2' => ['string', 'nullable', 'max:255'],
-            'address_line_3' => ['string', 'nullable', 'max:255'],
-            'city_municipality' => ['string', 'nullable', 'max:255'],
-            'province_state_county' => ['string', 'nullable', 'max:255'],
-            'postal_code' => ['string', 'nullable', 'max:255'],
-            'active' => ['boolean', 'nullable'],
-            'email_verified' => ['boolean', 'nullable'],
-            'profile_picture_path' => ['string', 'nullable', 'max:255'],
-            'roles' => ['array', 'nullable'],
-            'roles.*' => ['required', 'exists:roles,id', 'distinct'],
+            'birthday' => ['date_format:Y-m-d', 'nullable', 'before_or_equal:' . date('Y-m-d')],
+            'country_id' => ['nullable', 'string', 'exists:countries,id'],
+            'address_line_1' => ['nullable', new DbVarcharMaxLengthRule()],
+            'address_line_2' => ['nullable', new DbVarcharMaxLengthRule()],
+            'address_line_3' => ['nullable', new DbVarcharMaxLengthRule()],
+            'city_municipality' => ['nullable', new DbVarcharMaxLengthRule()],
+            'province_state_county' => ['nullable', new DbVarcharMaxLengthRule()],
+            'postal_code' => ['nullable', new DbVarcharMaxLengthRule()],
+            'active' => ['required', 'boolean'],
+            'email_verified_at' => ['nullable', 'date'],
+            'profile_picture_path' => ['nullable', new DbVarcharMaxLengthRule()],
+            'roles' => ['required', 'array'],
+            'roles.*' => ['required', 'distinct', 'exists:roles,name'],
         ];
     }
 }
