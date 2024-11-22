@@ -13,10 +13,10 @@ const props = defineProps({
 
 const title = computed(() => {
   return {
-    503: '503: Service Unavailable',
-    500: '500: Server Error',
-    404: '404: Page Not Found',
-    403: '403: Forbidden',
+    503: 'Service Unavailable',
+    500: 'Server Error',
+    404: 'Page Not Found',
+    403: 'Forbidden',
   }[props.status]
 })
 
@@ -35,17 +35,13 @@ const navigateBack = function () {
 </script>
 
 <template>
-  <Head :title="`${props.status} Error`"></Head>
+  <Head :title="title"></Head>
   <div
     class="flex h-[100vh] w-[100vw] flex-col items-center justify-start bg-gradient-to-b from-primary/90 to-primary pt-16 md:justify-center md:pt-0"
   >
     <AppAnimatedFloaters />
-    <h1 class="font-menu font-stylish text-[7rem] font-bold text-surface-200">{{ status }}</h1>
+    <h1 class="font-stylish text-[7rem] font-black text-surface-200">{{ status }}</h1>
     <p class="text-surface-200">{{ description }}</p>
     <Button icon="pi pi-caret-left" label="GO BACK" class="mt-6" @click="navigateBack"></Button>
-  </div>
-  <div>
-    <h1>{{ title }}</h1>
-    <div>{{ description }}</div>
   </div>
 </template>

@@ -4,7 +4,6 @@ import { Link, useForm, usePage, Head, router } from '@inertiajs/vue3'
 import { useBroadcastChannel } from '@vueuse/core'
 import { required, helpers, minLength, email, requiredIf, sameAs } from '@vuelidate/validators'
 import Card from 'primevue/card'
-import Toast from 'primevue/toast'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
 import Message from 'primevue/message'
@@ -152,7 +151,6 @@ if (isSupported.value) {
 <template>
   <Head title="Register"></Head>
   <section :class="`relative flex h-screen w-full flex-col items-center justify-center px-2 md:px-0 ${bgColorClass}`">
-    <Toast />
     <AppAnimatedFloaters />
     <Message
       v-if="!!page.props.errors[ErrorCode.EXTERNAL_ACCOUNT_EMAIL_CONFLICT]"

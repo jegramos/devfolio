@@ -30,6 +30,10 @@ Route::name('oauth.')
 Route::name('verification.')
     ->group(base_path('routes/web/verify-email.routes.php'));
 
+/** User Profile Routes */
+Route::name('profile.')
+    ->group(base_path('routes/web/profile.routes.php'));
+
 /** Builder Routes */
 Route::prefix('builder')
     ->name('builder.')->group(function () {

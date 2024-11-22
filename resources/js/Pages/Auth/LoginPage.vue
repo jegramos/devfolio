@@ -66,7 +66,7 @@ const showRateLimitToast = function () {
   toast.add({
     severity: 'warn',
     summary: 'Login',
-    detail: page.props.errors.TOO_MANY_REQUESTS,
+    detail: page.props.errors[ErrorCode.TOO_MANY_REQUESTS],
     life: 4000,
   })
 }

@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use Laravel\Socialite\Two\InvalidStateException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -32,21 +33,28 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn () => route('builder.resume.index'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Handle 429 errors. Redirect back to the previous route with an Error Code
-        $exceptions->render(function (ThrottleRequestsException $e) {
-            return redirect()
-                ->back()
-                ->withHeaders($e->getHeaders())
-                ->withErrors([
-                    ErrorCode::TOO_MANY_REQUESTS->value => 'Too many login attempts. Please try again in a minute.'
-                ]);
-        });
-
         $exceptions->respond(function (Response $response, Throwable $e, Request $request) {
             // Format API (JSON) error responses to make them consistent
             if ($request->is('api/*')) {
                 $createApiErrorResponse = resolve(CreateApiErrorResponseAction::class);
                 return $createApiErrorResponse->execute($e);
+            }
+
+            // Handle 429 errors. Redirect back to the previous route with an Error Code
+            if ($e instanceof ThrottleRequestsException) {
+                return redirect()
+                    ->back()
+                    ->withHeaders($e->getHeaders())
+                    ->withErrors([
+                        ErrorCode::TOO_MANY_REQUESTS->value => 'Too many requests. Please try again in a minute.'
+                    ]);
+            }
+
+            // Handle 404 errors.
+            if ($e instanceof NotFoundHttpException) {
+                return Inertia::render('ErrorPage', ['status' => Response::HTTP_NOT_FOUND])
+                    ->toResponse($request)
+                    ->setStatusCode(Response::HTTP_NOT_FOUND);
             }
 
             if (!app()->environment(['local', 'testing'])) {
