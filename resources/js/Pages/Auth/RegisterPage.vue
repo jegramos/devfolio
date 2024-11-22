@@ -64,8 +64,8 @@ const form = useForm({
   email: '',
   password: '',
   password_confirmation: '',
-  first_name: '',
-  last_name: '',
+  given_name: '',
+  family_name: '',
   country_id: '',
   recaptcha_response_token: '',
 })
@@ -86,10 +86,10 @@ const clientValidationRules = {
       helpers.withMessage('This email is already taken', uniqueUserIdentifierRule(props.checkAvailabilityBaseUrl, 'email'))
     ),
   },
-  first_name: {
+  given_name: {
     required: helpers.withMessage('First name is required.', required),
   },
-  last_name: {
+  family_name: {
     required: helpers.withMessage('Last name is required.', required),
   },
   password: {
@@ -200,20 +200,20 @@ if (isSupported.value) {
           <!-- Start Firstname and Lastname -->
           <section class="mt-4 flex w-full flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
             <DfInputText
-              v-model="form.first_name"
+              v-model="form.given_name"
               placeholder="First Name *"
-              :invalid="!!form.errors.first_name"
-              :invalid-message="form.errors.first_name"
+              :invalid="!!form.errors.given_name"
+              :invalid-message="form.errors.given_name"
             >
               <template #icon>
                 <i class="pi pi-id-card"></i>
               </template>
             </DfInputText>
             <DfInputText
-              v-model="form.last_name"
+              v-model="form.family_name"
               placeholder="Last Name"
-              :invalid="!!form.errors.last_name"
-              :invalid-message="form.errors.last_name"
+              :invalid="!!form.errors.family_name"
+              :invalid-message="form.errors.family_name"
             >
               <template #icon>
                 <i class="pi pi-id-card"></i>

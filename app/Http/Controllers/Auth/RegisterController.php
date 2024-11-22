@@ -44,8 +44,8 @@ class RegisterController
             'email' => $request->validated('email'),
             'username' => $request->validated('username'),
             'password' => $request->validated('password'),
-            'first_name' => $request->validated('first_name'),
-            'last_name' => $request->validated('last_name'),
+            'given_name' => $request->validated('given_name'),
+            'family_name' => $request->validated('family_name'),
         ];
 
         $user = $createUserAction->execute($userInfo);

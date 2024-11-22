@@ -15,9 +15,8 @@ class UserProfile extends Model
 
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
-        'middle_name',
+        'given_name',
+        'family_name',
         'mobile_number',
         'gender',
         'birthday',
@@ -63,12 +62,6 @@ class UserProfile extends Model
 
     protected function fullName(): Attribute
     {
-        return Attribute::get(function () {
-            $firstName = $this->first_name;
-            $lastName = $this->last_name;
-            $middleName = $this->middle_name;
-
-            return $middleName ? "$firstName $middleName $lastName" : "$firstName $lastName";
-        });
+        return Attribute::get(fn () => $this->given_name . ' ' . $this->family_name);
     }
 }

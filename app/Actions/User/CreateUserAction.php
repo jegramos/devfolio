@@ -17,16 +17,16 @@ use Throwable;
  *
  * Example:
  * <code>
- * $userDto = new CreateUserDto(
- *     email: $request->validated('email'),
- *     username: $request->validated('username'),
- *     password: $request->validated('password'),
- *     first_name: $request->validated('first_name'),
- *     last_name: $request->validated('last_name'),
- *     email_verified: false,
- * );
+ * $userInfo = [
+ *     'email' => $request->validated('email'),
+ *     'username' => $request->validated('username'),
+ *     'password' => $request->validated('password'),
+ *     'given_name' => $request->validated('given_name'),
+ *     'family_name' => $request->validated('family_name'),
+ *     'email_verified_at': now(),
+ * ];
  *
- * $user = $createUserAction->execute($userDto); // Returns an Eloquent User Model
+ * $user = $createUserAction->execute($userInfo); // Returns an Eloquent User Model
  * </code>
  */
 readonly class CreateUserAction

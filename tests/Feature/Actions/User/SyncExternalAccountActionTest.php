@@ -132,8 +132,8 @@ test('it can update an google existing user', /** @throws Throwable */ function 
         ->and($updatedUser->externalAccount->access_token)->toBe($providerUser->token)
         ->and($updatedUser->externalAccount->refresh_token)->toBe($providerUser->refreshToken)
         ->and($updatedUser->refreshToken)->toBe($providerUser->refreshToken)
-        ->and($updatedUser->userProfile->first_name)->toBe($providerUser->user['given_name'])
-        ->and($updatedUser->userProfile->last_name)->toBe($providerUser->user['family_name'])
+        ->and($updatedUser->userProfile->given_name)->toBe($providerUser->user['given_name'])
+        ->and($updatedUser->userProfile->family_name)->toBe($providerUser->user['family_name'])
         ->and($updatedUser->userProfile->profile_picture_path)->toBe($providerUser->getAvatar())
         ->and($updatedUser->email_verified_at)->not()->toBeNull();
 
@@ -143,7 +143,7 @@ test('it can update an google existing user', /** @throws Throwable */ function 
 test('it can update an github existing user', /** @throws Throwable */ function (string $name) {
     // Create an existing user with an external account
     /** @var ExternalAccount $externalAccount */
-    $userFactory = UserFactory::new()->has(UserProfileFactory::new()->state(['middle_name' => null]))->create();
+    $userFactory = UserFactory::new()->has(UserProfileFactory::new())->create();
     $externalAccount = ExternalAccountFactory::new()
         ->for($userFactory)
         ->create(['provider' => ExternalLoginProvider::GITHUB])

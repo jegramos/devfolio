@@ -32,8 +32,8 @@ class UserRequest extends FormRequest
                 'confirmed',
                 new PasswordRule(),
             ],
-            'first_name' => ['required', new DbVarcharMaxLengthRule()],
-            'last_name' => ['required', new DbVarcharMaxLengthRule()],
+            'given_name' => ['required', new DbVarcharMaxLengthRule()],
+            'family_name' => ['required', new DbVarcharMaxLengthRule()],
             'middle_name' => ['nullable', new DbVarcharMaxLengthRule()],
             'mobile_number' => [
                 'nullable',

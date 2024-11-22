@@ -17,10 +17,9 @@ use Throwable;
  * <code>
  * $user = User::find(123);
  * $updateData = [
- *     'first_name' => 'John',
- *     'last_name' => 'Doe',
- *     'email' => '[email address removed]',
- *     // ... other updatable fields
+ *     'given_name' => 'Ramon',
+ *     'family_name' => 'Magsaysay',
+ *     'email' => 'example@email.com',
  *     'roles' => [Role::ADMIN, Role::USER]
  * ];
  *

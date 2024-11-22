@@ -13,7 +13,7 @@ class QueuedVerifyEmailNotification extends VerifyEmail implements ShouldQueue
 {
     use Queueable;
 
-    private string $userFirstName;
+    private string $userGivenName;
     private int $expirationTimeMinutes;
 
     public function __construct(mixed $notifiable, int $expirationTimeMinutes)
@@ -21,7 +21,7 @@ class QueuedVerifyEmailNotification extends VerifyEmail implements ShouldQueue
         $this->onQueue(Queue::EMAILS->value);
 
         /** @var User $notifiable */
-        $this->userFirstName = $notifiable->userProfile->first_name;
+        $this->userGivenName = $notifiable->userProfile->given_name;
         $this->expirationTimeMinutes = $expirationTimeMinutes;
     }
 
@@ -31,7 +31,7 @@ class QueuedVerifyEmailNotification extends VerifyEmail implements ShouldQueue
 
         return (new MailMessage())
             ->subject('Verify Your Email Address')
-            ->greeting('Hey, ' . $this->userFirstName . '!')
+            ->greeting('Hey, ' . $this->userGivenName . '!')
             ->line("Thank you for registering to $appName.")
             ->line(
                 "Please click the button below to verify your email address. 

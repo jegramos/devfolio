@@ -27,8 +27,8 @@ class RegisterRequest extends FormRequest
             'email' => ['required', new EmailRule()],
             'username' => ['required', new UsernameRule()],
             'password' => ['required', 'confirmed', new PasswordRule()],
-            'first_name' => ['required', new DbVarcharMaxLengthRule()],
-            'last_name' => ['required', new DbVarcharMaxLengthRule()],
+            'given_name' => ['required', new DbVarcharMaxLengthRule()],
+            'family_name' => ['required', new DbVarcharMaxLengthRule()],
             'country_id' => ['required', 'exists:countries,id'],
             'recaptcha_response_token' => [new RecaptchaRule()]
         ];

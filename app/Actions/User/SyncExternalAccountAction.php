@@ -56,8 +56,8 @@ readonly class SyncExternalAccountAction
                     'email' => $providerUserEmail,
                     'username' => $provider->value . '-user-' . Str::uuid()->toString(),
                     'password' => null,
-                    'first_name' => $this->parseFirstname($provider, $providerAccount),
-                    'last_name' => $this->parseLastname($provider, $providerAccount),
+                    'given_name' => $this->parseGivenName($provider, $providerAccount),
+                    'family_name' => $this->parseFamilyName($provider, $providerAccount),
                     'email_verified_at' => now(),
                     'profile_picture_path' => $providerAccount->getAvatar(),
                 ];
@@ -85,8 +85,8 @@ readonly class SyncExternalAccountAction
 
             $updateUserAction->execute($externalAccount->user, [
                 'email' => $providerUserEmail,
-                'first_name' => $this->parseFirstname($provider, $providerAccount),
-                'last_name' => $this->parseLastname($provider, $providerAccount),
+                'given_name' => $this->parseGivenName($provider, $providerAccount),
+                'family_name' => $this->parseFamilyName($provider, $providerAccount),
                 'profile_picture_path' => $providerAccount->getAvatar(),
             ]);
 
@@ -94,7 +94,7 @@ readonly class SyncExternalAccountAction
         });
     }
 
-    private function parseFirstname(ExternalLoginProvider $provider, ProviderUser $providerAccount): string
+    private function parseGivenName(ExternalLoginProvider $provider, ProviderUser $providerAccount): string
     {
         if ($provider === ExternalLoginProvider::GOOGLE) {
             return $providerAccount->user['given_name'];
@@ -120,7 +120,7 @@ readonly class SyncExternalAccountAction
         throw new InvalidArgumentException('Invalid provider account.');
     }
 
-    private function parseLastname(ExternalLoginProvider $provider, ProviderUser $providerAccount): string
+    private function parseFamilyName(ExternalLoginProvider $provider, ProviderUser $providerAccount): string
     {
         if ($provider === ExternalLoginProvider::GOOGLE) {
             return $providerAccount->user['family_name'];
