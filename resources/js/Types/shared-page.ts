@@ -19,10 +19,8 @@ export type SharedPage = {
       profile_picture_url?: string
     }
   }
-  flash: {
-    cms: {
-      success?: string
-    }
+  flash?: {
+    [key in SessionFlashKey]: string
   }
 }
 
@@ -41,4 +39,14 @@ export enum ErrorCode {
   SERVER = 'SERVER_ERROR',
   PAYLOAD_TOO_LARGE = 'PAYLOAD_TOO_LARGE_ERROR',
   EXTERNAL_ACCOUNT_EMAIL_CONFLICT = 'EXTERNAL_ACCOUNT_EMAIL_CONFLICT_ERROR',
+}
+
+/**
+ * The different session flash keys from the back-end
+ */
+export enum SessionFlashKey {
+  CMS_SUCCESS = 'cms_success',
+  CMS_ERROR = 'cms_error',
+  CMS_LOGIN_SUCCESS = 'cms_login_success',
+  CMS_EMAIL_VERIFIED = 'cms_email_verified',
 }

@@ -26,10 +26,12 @@ export const passwordRule = () => helpers.regex(passwordRegex)
  */
 export const uniqueUserIdentifierRule = (
   baseUrl: string,
-  type: 'username' | 'email',
+  type: 'username' | 'email' | 'mobile_number',
   excludedId: string | number | null = null
 ) =>
   async function (value: string) {
+    value = encodeURIComponent(value.trim())
+
     // Remove the last char of the url if it ends with a '/'
     if (baseUrl.charAt(baseUrl.length - 1) === '/') baseUrl = baseUrl.slice(0, -1)
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Enums\ErrorCode;
+use App\Enums\SessionFlashKey;
 use App\Http\Requests\NoLoginEmailVerificationRequest;
 use Carbon\CarbonInterval;
 use Config;
@@ -26,6 +27,7 @@ class VerifyEmailController
         return Inertia::render('Auth/VerifyEmailNoticePage', [
             'sendEmailVerificationUrl' => route('verification.send'),
             'emailVerificationExpiration' => $emailExpiration,
+            'resumeBuilderUrl' => route('builder.resume.index'),
         ]);
     }
 
@@ -34,7 +36,7 @@ class VerifyEmailController
         $request->fulfill();
         return redirect()
             ->route('builder.resume.index')
-            ->with('success', 'Email address verified.');
+            ->with(SessionFlashKey::CMS_EMAIL_VERIFIED->value, 'Email address verified.');
     }
 
     public function sendVerification(Request $request): RedirectResponse
@@ -47,6 +49,6 @@ class VerifyEmailController
 
         $request->user()->sendEmailVerificationNotification();
 
-        return redirect()->back()->with('success', 'Verification email sent.');
+        return redirect()->back()->with(SessionFlashKey::CMS_EMAIL_VERIFIED->value, 'Verification email sent.');
     }
 }

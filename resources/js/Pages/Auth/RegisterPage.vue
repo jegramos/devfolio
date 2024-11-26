@@ -71,7 +71,6 @@ const form = useForm({
 })
 
 const clientValidationRules = {
-  $lazy: true,
   username: {
     required: helpers.withMessage('Username is required.', required),
     minLength: helpers.withMessage('Must be 3 or more characters', minLength(3)),

@@ -8,8 +8,11 @@ use App\Actions\User\UpdateUserAction;
 use App\Enums\ErrorCode;
 use App\Enums\ExternalLoginProvider;
 use App\Enums\Role;
+use App\Enums\SessionFlashKey;
 use App\Exceptions\DuplicateEmailException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use Throwable;
@@ -54,10 +57,10 @@ class GoogleLoginController
             ]);
         }
 
-        auth()->login($user);
-        session()->regenerate();
+        Auth::login($user);
+        Session::regenerate();
         return redirect()
             ->route('builder.resume.index')
-            ->with('success', 'You have logged in via Google.');
+            ->with(SessionFlashKey::CMS_LOGIN_SUCCESS->value, 'You have logged in via Google.');
     }
 }

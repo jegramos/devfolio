@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Extended version of 2 Input Components
- * @see https://primevue.org/inputtext/#api
+ * @see https://primevue.org/datepicker/#api
  * @see https://primevue.org/inputgroup/
  *
  *
@@ -9,7 +9,7 @@
  * @see https://vuejs.org/guide/components/attrs
  */
 import { computed, useSlots } from 'vue'
-import InputText from 'primevue/inputtext'
+import DatePicker from 'primevue/datepicker'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import FloatLabel from 'primevue/floatlabel'
@@ -37,12 +37,7 @@ const renderAsInputGroup = computed(() => !!slots.icon)
           <slot name="icon"></slot>
         </InputGroupAddon>
         <FloatLabel variant="on">
-          <InputText
-            :id="$.uid.toString()"
-            v-bind="$attrs"
-            :placeholder="undefined"
-            :class="{ 'cursor-not-allowed': $attrs.disabled }"
-          />
+          <DatePicker :input-id="$.uid.toString()" v-bind="$attrs" :placeholder="undefined" />
           <label :for="$.uid.toString()">{{ $attrs.placeholder }}</label>
         </FloatLabel>
       </InputGroup>
@@ -55,12 +50,7 @@ const renderAsInputGroup = computed(() => !!slots.icon)
   <template v-else>
     <div class="flex w-full flex-col">
       <FloatLabel variant="on">
-        <InputText
-          :id="$.uid.toString()"
-          v-bind="$attrs"
-          :placeholder="undefined"
-          :class="{ 'cursor-not-allowed': $attrs.disabled }"
-        />
+        <DatePicker :input-id="$.uid.toString()" v-bind="$attrs" :placeholder="undefined" />
         <label :for="$.uid.toString()">{{ $attrs.placeholder }}</label>
       </FloatLabel>
       <small v-if="$attrs.invalid" class="mt-1 animate-shake text-xs text-red-500 dark:text-red-300">

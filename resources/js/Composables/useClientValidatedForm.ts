@@ -5,9 +5,9 @@ import { useVuelidate } from '@vuelidate/core'
 type InertiaFormRecord = Record<string | number | symbol, unknown>
 type InertiaSubmissionMethod = (url: string, options?: Partial<VisitOptions>) => Promise<void>
 
-// Extend InertiaForm and convert the originally synchronous `post`, `put`, `patch`, `delete`, and `get` methods
+// Extend InertiaForm and convert the originally synchronous `post`, `put`, `patch`, `delete` and `get` methods
 // to asynchronous methods returning a Promise<void>.
-type ClientValidatedInertiaForm<T extends InertiaFormRecord> = Omit<
+export type ClientValidatedInertiaForm<T extends InertiaFormRecord> = Omit<
   InertiaForm<T>,
   'post' | 'put' | 'patch' | 'delete' | 'get'
 > & {

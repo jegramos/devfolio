@@ -8,8 +8,12 @@ use App\Actions\User\UpdateUserAction;
 use App\Enums\ErrorCode;
 use App\Enums\ExternalLoginProvider;
 use App\Enums\Role;
+use App\Enums\SessionFlashKey;
 use App\Exceptions\DuplicateEmailException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GithubProvider;
 use Throwable;
@@ -25,7 +29,7 @@ class GithubLoginController
 
     public function redirect(): RedirectResponse
     {
-        $config = config('services.github.oauth');
+        $config =   Config::get('services.github.oauth');
         $provider = Socialite::buildProvider(GithubProvider::class, $config);
         return $provider->redirect();
     }
@@ -36,7 +40,7 @@ class GithubLoginController
      */
     public function callback(): RedirectResponse
     {
-        $config = config('services.github.oauth');
+        $config = Config::get('services.github.oauth');
         $provider = Socialite::buildProvider(GithubProvider::class, $config);
 
         try {
@@ -54,10 +58,10 @@ class GithubLoginController
             ]);
         }
 
-        auth()->login($user);
-        session()->regenerate();
+        Auth::login($user);
+        Session::regenerate();
         return redirect()
             ->route('builder.resume.index')
-            ->with('success', 'You have logged in via Github.');
+            ->with(SessionFlashKey::CMS_LOGIN_SUCCESS->value, 'You have logged in via Github.');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\Gender;
 use App\Rules\DbVarcharMaxLengthRule;
 use App\Rules\EmailRule;
+use App\Rules\InternationalPhoneFormatRule;
 use App\Rules\PasswordRule;
 use App\Rules\UsernameRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,13 +35,13 @@ class UserRequest extends FormRequest
             ],
             'given_name' => ['required', new DbVarcharMaxLengthRule()],
             'family_name' => ['required', new DbVarcharMaxLengthRule()],
-            'middle_name' => ['nullable', new DbVarcharMaxLengthRule()],
             'mobile_number' => [
                 'nullable',
+                new InternationalPhoneFormatRule(),
                 'unique:user_profiles,mobile_number',
                 'phone:mobile,lenient,international',
             ],
-            'sex' => [new Enum(Gender::class), 'nullable'],
+            'gender' => [new Enum(Gender::class), 'nullable'],
             'birthday' => ['date_format:Y-m-d', 'nullable', 'before_or_equal:' . date('Y-m-d')],
             'country_id' => ['nullable', 'string', 'exists:countries,id'],
             'address_line_1' => ['nullable', new DbVarcharMaxLengthRule()],
@@ -54,6 +55,14 @@ class UserRequest extends FormRequest
             'profile_picture_path' => ['nullable', new DbVarcharMaxLengthRule()],
             'roles' => ['required', 'array'],
             'roles.*' => ['required', 'distinct', 'exists:roles,name'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            /** @see https://github.com/Propaganistas/Laravel-Phone#validation */
+            'mobile_number.phone' => 'The :attribute field format must be a valid mobile number',
         ];
     }
 }

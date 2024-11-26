@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Extended version of 2 Input Components
- * @see https://primevue.org/inputtext/#api
+ * @see https://primevue.org/inputmask/#api
  * @see https://primevue.org/inputgroup/
  *
  *
@@ -9,10 +9,11 @@
  * @see https://vuejs.org/guide/components/attrs
  */
 import { computed, useSlots } from 'vue'
-import InputText from 'primevue/inputtext'
+import InputMask from 'primevue/inputmask'
 import InputGroup from 'primevue/inputgroup'
 import InputGroupAddon from 'primevue/inputgroupaddon'
 import FloatLabel from 'primevue/floatlabel'
+import InputText from 'primevue/inputtext'
 
 defineOptions({
   inheritAttrs: false,
@@ -37,7 +38,7 @@ const renderAsInputGroup = computed(() => !!slots.icon)
           <slot name="icon"></slot>
         </InputGroupAddon>
         <FloatLabel variant="on">
-          <InputText
+          <InputMask
             :id="$.uid.toString()"
             v-bind="$attrs"
             :placeholder="undefined"
@@ -55,7 +56,7 @@ const renderAsInputGroup = computed(() => !!slots.icon)
   <template v-else>
     <div class="flex w-full flex-col">
       <FloatLabel variant="on">
-        <InputText
+        <InputMask
           :id="$.uid.toString()"
           v-bind="$attrs"
           :placeholder="undefined"

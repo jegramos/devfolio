@@ -89,6 +89,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(ExternalAccount::class);
     }
 
+    public function isFromExternalAccount(): bool
+    {
+        return is_null($this->password);
+    }
+
     /**
      * Send an email verification notification asynchronously
      */

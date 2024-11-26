@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\ErrorCode;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +32,7 @@ class LoginController
         // The user must be active for them to login
         $credentials['active'] = true;
 
-        if (auth()->attempt($credentials, $request->input('remember'))) {
+        if (Auth::attempt($credentials, $request->input('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended(route('builder.resume.index'));
         }

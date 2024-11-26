@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\SessionFlashKey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
@@ -62,11 +63,11 @@ class HandleInertiaRequests extends Middleware
                         ->toArray(),
                 ];
             },
-            // Flash messages
             'flash' => [
-                'cms' => [
-                    'success' => fn () => $request->session()->get('success'),
-                ],
+                SessionFlashKey::CMS_SUCCESS->value => fn () => $request->session()->get(SessionFlashKey::CMS_SUCCESS->value),
+                SessionFlashKey::CMS_ERROR->value => fn () => $request->session()->get(SessionFlashKey::CMS_ERROR->value),
+                SessionFlashKey::CMS_LOGIN_SUCCESS->value => fn () => $request->session()->get(SessionFlashKey::CMS_LOGIN_SUCCESS->value),
+                SessionFlashKey::CMS_EMAIL_VERIFIED->value => fn () => $request->session()->get(SessionFlashKey::CMS_EMAIL_VERIFIED->value),
             ],
         ]);
     }

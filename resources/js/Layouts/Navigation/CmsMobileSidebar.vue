@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Link, usePage } from '@inertiajs/vue3'
+import { Link, router, usePage } from '@inertiajs/vue3'
 import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar'
@@ -15,6 +15,10 @@ const authenticatedUser = page.props.auth?.user
 const nameInitials = getAvatarDisplayNamePlaceholder(authenticatedUser?.full_name)
 
 const { navItems } = useCmsNavLinks(page)
+
+const logout = function () {
+  router.post(page.props.logoutUrl)
+}
 </script>
 
 <template>
@@ -61,7 +65,7 @@ const { navItems } = useCmsNavLinks(page)
     <!-- End Nav Items -->
     <!-- Start Logout Button -->
     <div class="mt-2 flex">
-      <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger"></Button>
+      <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger" @click="logout"></Button>
     </div>
     <!-- End Logout Button -->
   </Drawer>
